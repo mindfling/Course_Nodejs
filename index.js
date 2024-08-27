@@ -1,4 +1,4 @@
-console.warn("\nhello world");
+console.warn("hello world\n");
 
 /*
 Исправьте код, чтобы получить правильную считалочку
@@ -11,42 +11,40 @@ console.warn("\nhello world");
 Ехал слон. //* 6
 Кто не верит – //* 7
 Выйди вон! //* 8
-
-Все функции console.log должны оставаться в том же порядке,
-но вы можете менять местами функции
-  setTimeout,
-  setImmediate и 
-  process.nextTick
 */
 
-
+setImmediate(() => {
+  console.log("4 Был диван,"); //*4
+});
 
 setTimeout(() => {
-  console.log('Был диван,');
+  console.log("8 Выйди вон!");
 }, 100);
 
 setImmediate(() => {
-  console.log('Выйди вон!');
+  console.log("5 На диване"); //*5
 });
 
 process.nextTick(() => {
-  console.log('На диване');
-});
-
-process.nextTick(() => {
-  console.log('Чемодан,');
-});
-
-setImmediate(() => {
-  console.log('Кто не верит –');
+  console.log("2 Чемодан,"); //*2
 });
 
 setTimeout(() => {
-  console.log('Ехал слон.');
+  console.log("7 Кто не верит –"); // 7
 }, 10);
 
 setImmediate(() => {
-  console.log('В чемодане');
+  console.log("6 Ехал слон."); // 6
 });
 
-console.log('Плыл по морю');
+process.nextTick(() => {
+  console.log("3 В чемодане"); //*3
+});
+
+console.log("1 Плыл по морю"); //**1
+
+
+setTimeout(() => {
+  console.log('');
+  console.error('Bye bye')
+}, 500)
