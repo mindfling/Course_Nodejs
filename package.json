@@ -1,7 +1,7 @@
 {
-  "name": "initial",
+  "name": "two",
   "version": "1.0.0",
-  "description": "the template code for lessons",
+  "description": "the homework code on node js with nodemon for lesson 2 two",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
