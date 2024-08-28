@@ -1,3 +1,4 @@
+console.log('\nhello');
 /*
 Исправьте код, чтобы получить правильную считалочку
 
@@ -11,32 +12,37 @@
 8 Выйди вон!
 */
 
+
+const now = new Date();
+const getCurrent = () => (new Date() - now);
+
+
 setImmediate(() => {
-  console.log("4 Был диван,");
+  console.log("4 Был диван,", getCurrent());
 });
 
 setTimeout(() => {
-  console.log("8 Выйди вон!");
+  console.log("8 Выйди вон!", getCurrent());
 }, 100);
 
 setImmediate(() => {
-  console.log("5 На диване");
+  console.log("5 На диване", getCurrent());
 });
 
 process.nextTick(() => {
-  console.log("2 Чемодан,");
+  console.log("2 Чемодан,", getCurrent());
 });
 
 setTimeout(() => {
-  console.log("7 Кто не верит –");
+  console.log("7 Кто не верит –", getCurrent());
 }, 10);
 
 setImmediate(() => {
-  console.log("6 Ехал слон.");
+  console.log("6 Ехал слон.", getCurrent());
 });
 
 process.nextTick(() => {
-  console.log("3 В чемодане");
+  console.log("3 В чемодане", getCurrent());
 });
 
-console.log("1 Плыл по морю");
+console.log("1 Плыл по морю", getCurrent());
