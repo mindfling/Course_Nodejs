@@ -1,20 +1,18 @@
-console.warn("hello world\n");
-
 /*
 Исправьте код, чтобы получить правильную считалочку
 
-Плыл по морю //* 1
-Чемодан, //* 2 
-В чемодане //* 3
-Был диван, //* 4
-На диване //* 5
-Ехал слон. //* 6
-Кто не верит – //* 7
-Выйди вон! //* 8
+1 Плыл по морю
+2 Чемодан,
+3 В чемодане
+4 Был диван,
+5 На диване
+6 Ехал слон.
+7 Кто не верит –
+8 Выйди вон!
 */
 
 setImmediate(() => {
-  console.log("4 Был диван,"); //*4
+  console.log("4 Был диван,");
 });
 
 setTimeout(() => {
@@ -22,29 +20,23 @@ setTimeout(() => {
 }, 100);
 
 setImmediate(() => {
-  console.log("5 На диване"); //*5
+  console.log("5 На диване");
 });
 
 process.nextTick(() => {
-  console.log("2 Чемодан,"); //*2
+  console.log("2 Чемодан,");
 });
 
 setTimeout(() => {
-  console.log("7 Кто не верит –"); // 7
+  console.log("7 Кто не верит –");
 }, 10);
 
 setImmediate(() => {
-  console.log("6 Ехал слон."); // 6
+  console.log("6 Ехал слон.");
 });
 
 process.nextTick(() => {
-  console.log("3 В чемодане"); //*3
+  console.log("3 В чемодане");
 });
 
-console.log("1 Плыл по морю"); //**1
-
-
-setTimeout(() => {
-  console.log('');
-  console.error('Bye bye')
-}, 500)
+console.log("1 Плыл по морю");
