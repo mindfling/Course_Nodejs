@@ -1,5 +1,20 @@
-console.warn('hello');
-
+/*
+// на вход принимает объект такого вида
+{
+  name: 'иван иванов'
+  dateBirth: 10.11.1987,
+  purpose: 'карьерный рост'
+}
+// возвращает
+{
+  id: 'sdf3234gt4',  // случайны id из 10 символов 
+  firstName: 'Иван', // первая буква большая, остальные строчные
+  lastName: 'Иванов', // первая буква большая, остальные строчные
+  dateBirth: 10.11.1987,
+  age: '35', // высчитывается возраст на текущий день
+  purpose: 'Карьерный рост',  // первая буква большая, остальные строчные
+}
+*/
 
 const getRandomInt = (n) => Math.floor(Math.random() * (n + 1));
 
@@ -12,62 +27,52 @@ const getId = (len = 10) => {
   return result;
 };
 
+const calculateAge = (dateBirth) => {
+  // парсим строку даты
+  const date = dateBirth.split('.')[0];
+  const month = dateBirth.split('.')[1];
+  const year = dateBirth.split('.')[2];
+  // проверить  
+  const birthTime = (new Date(`${month}-${date}-${year}`)).getTime();
+  const currentTime = (new Date()).getTime();
+  // вычисляем возраст из разницы милисекунд
+  const age = Math.trunc((currentTime - birthTime) / 1000 / 3600 / 24 / 365);
+  return age.toString();
+}
+
 const capitalize = (str) => `${str.charAt(0).toUpperCase()}${str.substring(1).toLowerCase()}`;
 
 
-
-
 const createWorker = (person) => {
-  console.log('person: ', person);
-  
-  const birth = {
-    date: person.dateBirth.split('.')[0],
-    month: person.dateBirth.split('.')[1],
-    year: person.dateBirth.split('.')[2],
-  };
-  
-  const date = person.dateBirth.split('.')[0];
-  const month = person.dateBirth.split('.')[1];
-  const year = person.dateBirth.split('.')[2];
-  
-  const birthTime = (new Date(`${month}-${date}-${year}`)).getTime();
-  console.log('birthTime: ', birthTime);
-  
-  const currentTime = (new Date()).getTime();
-  console.log('currentTime: ', currentTime);
-  
-  // вычисляем возраст из разницы милисекунд
-  const age = (currentTime - birthTime) / 1000 / 3600 / 24 / 365;
-  console.log('age: ', age);
-  
   const worker = {
     id: getId(10),
-    dateBirth: person.dateBirth,
-    age: ((new Date()).getFullYear() - parseInt(birth.year)),
     firstName: capitalize(person.name.split(' ')[0]),
     lastName: capitalize(person.name.split(' ')[1]),
+    dateBirth: person.dateBirth,
+    age: calculateAge(person.dateBirth),
     purpose: capitalize(person.purpose),
   };
-  
   return worker;
 }
 
 
 
 const personOne = {
-  name: 'ваня иванов иванович',
+  name: 'иван иванов',
   dateBirth: '10.11.1987',
-  purpose: 'вхожу в ИТ',
+  purpose: 'карьерный рост',
 };
 
 const personTwo = {
-  name: 'брюсс беннер',
-  dateBirth: '10.11.1963',
-  purpose: 'Становлюсь Халком',
+  name: 'шелдон ли купер',
+  dateBirth: '26.02.1980',
+  purpose: 'получаю Нобелевскую премию',
 };
 
 const workerOne = createWorker(personOne);
+console.log('\npersonOne: ', personOne);
 console.log('workerOne: ', workerOne);
 
 const workerTwo = createWorker(personTwo);
+console.log('\npersonTwo: ', personTwo);
 console.log('workerTwo: ', workerTwo);
