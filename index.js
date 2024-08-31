@@ -1,18 +1,5 @@
 import { DateTime, Interval, Duration } from "luxon";
 
-/*{
-  name: 'иван иванов'
-  dateBirth: 10.11.1987,
-  purpose: 'карьерный рост'
-}*/
-/*{
-  id: 'sdf3234gt4',  // случайны id из 10 символов 
-  firstName: 'Иван', // первая буква большая, остальные строчные
-  lastName: 'Иванов', // первая буква большая, остальные строчные
-  dateBirth: "10.11.1987",
-  age: '35', // высчитывается возраст на текущий день
-  purpose: 'Карьерный рост',  // первая буква большая, остальные строчные
-}*/
 
 const getRandomInt = (n) => Math.floor(Math.random() * (n + 1));
 
@@ -26,9 +13,9 @@ const getRandomId = (len = 10) => {
   return result;
 };
 
-// using Luxon
 const calculateAge = (dateBirth) => {
   const [date, month, year] = dateBirth.split(".").map((n) => parseInt(n));
+  // using Luxon
   const birth = DateTime.local(year, month, date); // ? проверить дата рождения
   const curr = DateTime.now(); // ? проверить текущая дата
   const age = Interval.fromDateTimes(birth, curr).toDuration("years").years;
@@ -45,7 +32,7 @@ const createWorker = (person) => {
   const [firstName, lastName] = person.name.split(' ').map(capitalize);
   
   const worker = {
-    id: getRandomId(10),
+    id: getRandomId(),
     firstName,
     lastName,
     dateBirth: person.dateBirth,
