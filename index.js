@@ -1,28 +1,22 @@
 import { DateTime, Interval, Duration } from "luxon";
 
-// на вход принимает объект такого вида
-/*
-{
+/*{
   name: 'иван иванов'
   dateBirth: 10.11.1987,
   purpose: 'карьерный рост'
-}
-*/
-// возвращает
-/*
-{
+}*/
+/*{
   id: 'sdf3234gt4',  // случайны id из 10 символов 
   firstName: 'Иван', // первая буква большая, остальные строчные
   lastName: 'Иванов', // первая буква большая, остальные строчные
   dateBirth: "10.11.1987",
   age: '35', // высчитывается возраст на текущий день
   purpose: 'Карьерный рост',  // первая буква большая, остальные строчные
-}
-*/
+}*/
 
 const getRandomInt = (n) => Math.floor(Math.random() * (n + 1));
 
-const getId = (len = 10) => {
+const getRandomId = (len = 10) => {
   const charset =
     "abcdefgijklmnopqrstuvwxyzABCDEFGIJKLMNOPQRSTUVWXYZ1234567890";
   let result = "";
@@ -32,29 +26,28 @@ const getId = (len = 10) => {
   return result;
 };
 
-
-// * вычисляем возраст полных лет с помощью Luxon
+// using Luxon
 const calculateAge = (dateBirth) => {
-  // парсим строку даты
   const [date, month, year] = dateBirth.split(".").map((n) => parseInt(n));
-  // проверить
   const birth = DateTime.local(year, month, date); // ? проверить дата рождения
   const curr = DateTime.now(); // ? проверить текущая дата
   const age = Interval.fromDateTimes(birth, curr).toDuration("years").years;
-
   return Math.trunc(age);
 };
-
 
 const capitalize = (str) =>
   `${str.charAt(0).toUpperCase()}${str.substring(1).toLowerCase()}`;
 
+const upperize = (str) => str.toUpperCase();
+   
 
 const createWorker = (person) => {
+  const [firstName, lastName] = person.name.split(' ').map(capitalize);
+  
   const worker = {
-    id: getId(10),
-    firstName: capitalize(person.name.split(" ")[0]),
-    lastName: capitalize(person.name.split(" ")[1]),
+    id: getRandomId(10),
+    firstName,
+    lastName,
     dateBirth: person.dateBirth,
     age: calculateAge(person.dateBirth),
     purpose: capitalize(person.purpose),
@@ -76,8 +69,8 @@ const personTwo = {
 };
 
 const workerOne = createWorker(personOne);
-console.log("\npersonOne: ", personOne);
-console.log("workerOne: ", workerOne);
+console.log("", {personOne});
+console.log({workerOne});
 
 const workerTwo = createWorker(personTwo);
 console.log('\npersonTwo: ', personTwo);
