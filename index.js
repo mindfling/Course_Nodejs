@@ -35,7 +35,10 @@ const capitalize = (str) =>
 const upperize = (str) => str.toUpperCase();
 
 const createWorker = (person) => {
-  const [firstName, lastName] = person.name.split(" ").map(capitalize);
+  // const [firstName, lastName] = person.name.split(" ").map(capitalize);
+  const personNames = person.name.split(" ").map(capitalize);
+  const firstName = personNames[0];
+  const lastName = personNames[personNames.length - 1];
   const worker = {
     id: getRandomId(),
     firstName,
@@ -54,18 +57,12 @@ const createWorker = (person) => {
 //   purpose: "карьерный рост",
 // }
 
-console.log('workerTwo:', {
+console.log('workerTwo:', createWorker({
   name: "иван иванов",
   dateBirth: "10.11.1987",
   purpose: "карьерный рост",
-});
+}));
 
-// const workerOne = createWorker(personOne);
-// console.log("\n\n", { personOne }, { workerOne });
-
-// const workerTwo = createWorker(personTwo);
-// console.log("\npersonTwo: ", personTwo);
-// console.log("workerTwo: ", workerTwo);
 
 const workerTwo = createWorker({
   name: "шелдон ли купер",
