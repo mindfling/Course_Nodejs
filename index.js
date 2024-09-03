@@ -1,7 +1,6 @@
-import { DateTime, Interval, Duration } from "luxon";
 import { createWorker } from "./modules/worker.mjs";
 
-console.log('halo using ESModule');
+console.log('halo using ESModule:\n');
 
 console.log('workerTwo:', createWorker({
   name: "иван иванов",

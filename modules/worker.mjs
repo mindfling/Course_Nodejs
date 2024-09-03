@@ -24,16 +24,21 @@ const calculateAge = (dateBirth) => {
 };
 
 
+// all letters to Upper
+const upperize = (str) => str.toUpperCase();
+
+// all letters to Lower
+const lowerize = (str) => str.toLowerCase();
+
+// only first letter Big
 const capitalize = (str) =>
   `${str.charAt(0).toUpperCase()}${str.substring(1).toLowerCase()}`;
 
-const upperize = (str) => str.toUpperCase();
-
-const lowerize = (str) => str.toLowerCase();
+const capitalizeWords = (words) => words.map(capitalize);
 
 
 export const createWorker = (person) => {
-  const personNames = person.name.split(" ").map(capitalize);
+  const personNames = capitalizeWords(person.name.split(" "));
   const worker = {
     id: getRandomId(),
     firstName: personNames[0],
