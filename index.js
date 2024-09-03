@@ -1,5 +1,6 @@
 import { DateTime, Interval, Duration } from "luxon";
 
+
 const getRandomInt = (n) => Math.floor(Math.random() * (n + 1));
 
 const getRandomId = (len = 10) => {
@@ -14,14 +15,7 @@ const getRandomId = (len = 10) => {
 
 
 const calculateAge = (dateBirth) => {
-  // dateBirth: '10.11.1987',
-
-  const [date, month, year] = dateBirth.split(".").map(Number);
-  console.log('date, month, year: ', date, month, year);
-
-  console.log(dateBirth)
-
-  // using Luxon
+  // using Luxon Time Lib 
   const birth = DateTime.fromFormat(dateBirth, "dd.MM.yyyy", {zone: 'UTC'})
   const curr = DateTime.now();
   const age = Interval.fromDateTimes(birth, curr).toDuration("years").years;
@@ -34,8 +28,10 @@ const capitalize = (str) =>
 
 const upperize = (str) => str.toUpperCase();
 
+const lowerize = (str) => str.toLowerCase();
+
+
 const createWorker = (person) => {
-  // const [firstName, lastName] = person.name.split(" ").map(capitalize);
   const personNames = person.name.split(" ").map(capitalize);
   const firstName = personNames[0];
   const lastName = personNames[personNames.length - 1];
@@ -50,12 +46,6 @@ const createWorker = (person) => {
   return worker;
 };
 
-
-// const personOne = {
-//   name: "иван иванов",
-//   dateBirth: "10.11.1987",
-//   purpose: "карьерный рост",
-// }
 
 console.log('workerTwo:', createWorker({
   name: "иван иванов",
