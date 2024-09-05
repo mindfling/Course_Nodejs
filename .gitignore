@@ -1,4 +1,5 @@
+node_modules/
+template/
 .vscode
-node_modules
 *.zip
 *.rar
