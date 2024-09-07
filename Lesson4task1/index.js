@@ -6,7 +6,14 @@ console.log('Hello Event Emmiter');
 // event emmiter
 
 class MyEventEmitter extends EventEmitter {
+  constructor() {
+    super();
+    this.tickCount = 0
+  }
   
+  increase() {
+    this.tickCount++;
+  }
 }
 
 // instance of my event emmiter
@@ -14,7 +21,13 @@ class MyEventEmitter extends EventEmitter {
 const myEventEmmiter = new MyEventEmitter();
 
 myEventEmmiter.addListener('tick', () => {
-  console.log('listener tick');
+  console.log('listener tick', myEventEmmiter.tickCount);
+  myEventEmmiter.increase();
+  
+  if (myEventEmmiter.tickCount > 10) {
+    myEventEmmiter.removeAllListeners('tick');
+    clearInterval(timerTick);
+  }
 });
 
 
@@ -22,6 +35,6 @@ myEventEmmiter.addListener('tick', () => {
 // * test
 
 // tick every 1 second
-setInterval(() => {
+const timerTick = setInterval(() => {
   myEventEmmiter.emit('tick');
 }, 1000)
