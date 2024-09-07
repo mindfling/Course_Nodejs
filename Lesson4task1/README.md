@@ -15,6 +15,8 @@
 
 > Создайте таймер, который будет генерировать событие tick и выводить сообщение в консоль.
 
+> Используйте EventEmmiter
+
 ```js
 node index
 
@@ -25,10 +27,10 @@ Tick - 4
 ...
 ```
 
-Используйте EventEmmiter
-
 Дмитрий Дим Непочтов
 
 Ans:
 
 <https://github.com/mindfling/Course_Nodejs/tree/lesson04>
+
+<https://github.com/mindfling/Course_Nodejs/tree/lesson04/Lesson4task1>
