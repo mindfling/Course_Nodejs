@@ -3,38 +3,30 @@ import { EventEmitter } from 'node:events';
 console.log('Hello Event Emmiter');
 
 
-// event emmiter
+// settings
+var count = 0;
+const timeout = 500;
+const tick = 'tick';
+const MAX_TICK = 10;
 
-class MyEventEmitter extends EventEmitter {
-  constructor() {
-    super();
-    this.tickCount = 0
-  }
-  
-  increase() {
-    this.tickCount++;
-  }
-}
 
-// instance of my event emmiter
+// my event emmiter
+class EE extends EventEmitter {}
 
-const myEventEmmiter = new MyEventEmitter();
+const ee = new EE();
 
-myEventEmmiter.addListener('tick', () => {
-  console.log('listener tick', myEventEmmiter.tickCount);
-  myEventEmmiter.increase();
-  
-  if (myEventEmmiter.tickCount > 10) {
-    myEventEmmiter.removeAllListeners('tick');
-    clearInterval(timerTick);
+ee.once(tick, () => {
+  count++;  
+  console.log(` tick - ${count}`);
+  if (count >= MAX_TICK) {
+    ee.removeAllListeners(tick);
+    clearInterval(tickTimer);
   }
 });
 
 
-
 // * test
-
-// tick every 1 second
-const timerTick = setInterval(() => {
-  myEventEmmiter.emit('tick');
-}, 1000)
+const tickTimer = setInterval(() => {
+  // emit 1 tick event every 1s
+  ee.emit(tick);
+}, timeout);
