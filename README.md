@@ -2,7 +2,6 @@
 
 ## Стартовый шаблон node.js
 
-
 Задание #1
 
 Создайте таймер, который будет генерировать событие tick и выводить сообщение в консоль.
@@ -14,7 +13,7 @@
 ### Задание #1
 
 > Создайте таймер, который будет генерировать событие tick и выводить сообщение в консоль.
-
+>
 > Используйте EventEmmiter
 
 ```js
@@ -27,10 +26,9 @@ Tick - 4
 ...
 ```
 
-Дмитрий Дим Непочтов
-
 Ans:
 
 <https://github.com/mindfling/Course_Nodejs/tree/lesson04>
 
-<https://github.com/mindfling/Course_Nodejs/tree/lesson04/Lesson4task1>
+- Задание #1 <https://github.com/mindfling/Course_Nodejs/tree/lesson04/task1>
+- <https://github.com/mindfling/Course_Nodejs/tree/lesson04/task2>
