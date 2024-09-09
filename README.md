@@ -1,17 +1,36 @@
-# Course_Nodejs
+# node-template-project
 
-## ME Course of Beckend developer Node.js
+## Стартовый шаблон node.js
 
 
-### lesson04 task1
+Задание #1
+
+Создайте таймер, который будет генерировать событие tick и выводить сообщение в консоль.
+
+Используйте EventEmmiter
+
+## lesson04 task1
 
 ### Задание #1
 
+> Создайте таймер, который будет генерировать событие tick и выводить сообщение в консоль.
+
+> Используйте EventEmmiter
+
+```js
+node index
+
+Tick - 1
+Tick - 2
+Tick - 3
+Tick - 4
+...
+```
+
+Дмитрий Дим Непочтов
+
+Ans:
+
+<https://github.com/mindfling/Course_Nodejs/tree/lesson04>
+
 <https://github.com/mindfling/Course_Nodejs/tree/lesson04/Lesson4task1>
-
-
-### lesson04 task2
-
-### Задание #2
-
-<https://github.com/mindfling/Course_Nodejs/tree/lesson04/Lesson4task2>
