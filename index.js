@@ -1,30 +1,28 @@
 import { tickEmitter } from "./modules/tickTimer.js";
 
 
-const emitter = new tickEmitter(5);
+const emitter = new tickEmitter(11);
 emitter.sayHello('Timer')
 
-let c = 0;
 
 const tickHandle = (count) => {
-  console.log(` Tick - ${++c} - ${count}`);
+  console.log(` Tick - ${count}`);
 
-  if (count > emitter._maxCount) {
-    clearInterval(emitter.tickTimer);
-    console.log('timer stoped');
+  if (count > emitter.maxCount) {
     emitter.removeAllListeners('tick');
-    console.log('all listeners removed');
+    emitter.stopTimer()
+
+    clearTimeout(emegencyTimer)
   }
 }
 
 emitter.on('tick', tickHandle);
-
 
 // * test timer
 emitter.startTimer();
 
 
 // * emegency stop timer
-setTimeout(() => {
+const emegencyTimer = setTimeout(() => {
   emitter.stopTimer();
 }, 25000);
