@@ -1,21 +1,22 @@
 import { EventEmitter } from "node:events";
 
-// * just simple dummy procedure style
+// * just simple dummy procedure paradigme
 class EE extends EventEmitter {
 }
 
 const ee = new EE();
 
-
+// settings
+const timeout = 1000;
+const MAX_TICK = 10;
 let count = 0;
 
-const tickHandle = (x) => {
-  console.log(` Tick - ${++count} <= ${x}`);
-
-  if (count > 10) {
+const tickHandle = () => {
+  ++count;
+  console.log(` Tick - ${count}`);
+  if (count > MAX_TICK) {
     clearInterval(tickTimer);
     ee.removeAllListeners('tick');
-    console.log('timer stoped');
   }
 }
 
@@ -25,10 +26,10 @@ ee.on('tick', tickHandle);
 // * test ticks in 1000ms
 const tickTimer = setInterval(() => {
   ee.emit('tick', count)
-}, 1000);
+}, timeout);
 
 
 // * emegency stop timer
 setTimeout(() => {
   clearInterval(tickTimer);
-}, 25000);
+}, 20000);
