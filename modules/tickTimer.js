@@ -30,7 +30,6 @@ export class tickEmitter extends EventEmitter {
 
   increaseCount() {
     this.#tickCount++;
-    console.log('increase tickCount: ', this.tickCount);
   }
 
   sayHello(name = '') {
