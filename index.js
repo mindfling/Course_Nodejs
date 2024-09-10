@@ -28,30 +28,47 @@ const emegencyTimer = setTimeout(() => {
 }, 600000);
 
 
-
-
 const dim = new User('Дим');
 const ben = new User('Ben');
 const kola = new User('Николай');
+const ola = new User('Оля');
 
+// todo in constructor
+// dim.on('msg', dim.receiveMessage)
+// ben.on('msg', dim.receiveMessage)
+// kola.on('msg', dim.receiveMessage)
 
-dim.on('msg', dim.receiveMessage)
-ben.on('msg', dim.receiveMessage)
-kola.on('msg', dim.receiveMessage)
+setTimeout(() => {
+  dim.sendMessage('Как дела?');
+}, 0);
 
+setTimeout(() => {
+  ola.sendMessage('Всем приветы :)');
+})
 
 dim.sendMessage('Привет');
-dim.sendMessage('Как дела?');
 
 setTimeout(() => {
   ben.sendMessage('Hello, everything ok');
+  ola.sendMessage('Когда на природу?')
 }, 5000);
 
 setTimeout(() => {
     kola.sendMessage('Привет, у нас тоже все путем');
-}, 1000);
+    new User("Валя").sendMessage('Главное рюкзачки на природу взять с едой :-р')
+}, 3500);
 
 setTimeout(() => {
-    dim.sendMessage('ОТлично РАд ВСех слышать');
-}, 2000);
+    dim.sendMessage('отлично рад всех слышать');
+}, 7700);
 
+setTimeout(() => {
+    kola.sendMessage('Тогда на природу числа 25го как договаривались');
+}, 9700);
+
+
+dim.generateMessage('\nТогда кто идет все плюсики в чат\n')
+dim.generateMessage('+')
+ola.generateMessage('++')
+ben.generateMessage('+')
+kola.generateMessage('+++')

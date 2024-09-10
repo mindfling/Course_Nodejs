@@ -1,17 +1,15 @@
 import {EventEmitter} from 'node:events';
 
-
 // * try module export class EventEmitter
-export class MyEventEmitter extends EventEmitter { }
-
-
-export class User extends MyEventEmitter {
+export class User extends EventEmitter {
   #username;
 
   constructor(username) {
     super();
     this.#username = username;
-    console.log('constructed: ', this.username);
+    console.log('В чате новый пользователь:', this.username);
+    // сразу навешиваем слушатель событий
+    this.on('msg', this.receiveMessage);
   }
 
   get username() {
@@ -26,15 +24,26 @@ export class User extends MyEventEmitter {
     });
   }
 
+  // генерируем сообщения в случайное время
+  generateMessage(text) {
+    const msg = {
+      username: this.#username,
+      message: text,
+    }
+    const timeout = Math.floor(Math.random() * 10000 + 10000);
+    console.log('next messag in timeout: ', timeout);
+    setTimeout(() => {
+      this.emit('msg', msg);
+    }, timeout);
+  }
+
   // обработчик получения сообщения
   receiveMessage(msg) {
     console.log(`${msg.username}: "${msg.message}"`);
   }
 
-
-  on(eventName, listener) {
+  on(eventName = 'msg', listener) {
     // подписывает слушателя на событие
     super.on('msg', this.receiveMessage);
   }
-
 }
