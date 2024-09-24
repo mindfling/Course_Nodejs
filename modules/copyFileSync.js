@@ -62,6 +62,8 @@ export const readDir = (path) => {
     }
   })
 
+  return;
+
   console.log();
 }
 

@@ -3,17 +3,12 @@ import { copyFileSync, copyTextFileSync, readDir } from './modules/copyFileSync.
 
 const handleCopyError = err => {
   console.log('\nhello handle');
-  console.error('МОЙ ОБРАБОТЧИК ОШИБОК:');
-  console.log(
-    'handleCopyError',
-    err.errno,
-    err.code,
-    err.syscall,
-    'at PATH',
-    err.path,
-  );
-  // throw new Error('ОБРАБОТЧИК ОШИБКИ ПРИ КОПИРОВАНИИ')
-  console.log();
+  console.error(`МОЙ ОБРАБОТЧИК ОШИБОК handleCopyError:
+    ${err.errno}
+    ${err.code}
+    ${err.syscall}
+    'at PATH' ${err.path}
+`);
 };
 
 const App = () => {
@@ -24,13 +19,18 @@ const App = () => {
   
   try {
     console.log('\nbefore await');
-    readDir('files');
-    copyTextFileSync(fromPath, toPath);
+    readDir('./files');
+    // copyTextFileSync(fromPath, toPath);
     console.log('after await\n');
+
   } catch (error) {
     console.log('error: ', error);
+  } finally {
+    console.log('trying is finished');
   }
 }
 
+
 // * test *
 App();
+// * test *
