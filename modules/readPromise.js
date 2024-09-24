@@ -14,7 +14,7 @@ export const readText = async filePath => {
 };
 
 
-export const readFile = async (filePath) => {
+export const read = async (filePath) => {
   // todo filePath check
 
   try {
