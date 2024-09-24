@@ -1,0 +1,4 @@
+alias ll='ls -l'
+alias ls='ls -F --color=auto --show-control-chars'
+alias node='winpty node.exe'
+alias winget='winpty winget.exe'
