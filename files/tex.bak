@@ -1,5 +1,4 @@
 alias ..='cd ..'
-alias a='alias'
 alias l='ls -lash --group-directories-first'
 alias ll='ls -l'
 alias ls='ls -F --color=auto --show-control-chars'
@@ -7,3 +6,7 @@ alias node='winpty node.exe'
 alias winget='winpty winget.exe'
 alias dev='npm run dev'
 alias start='npm run start'
+alias a='alias'
+a cls=clear
+a run=dev
+a log='git log --all --oneline'

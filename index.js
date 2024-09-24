@@ -11,7 +11,7 @@ const readWrite = async (target, dest) => {
 
   const data = await readText(target);
   console.log('data: ', data);
-  await write(dest, data.toUpperCase());
+  await write(dest, data);
 }
 
 const App = () => {
