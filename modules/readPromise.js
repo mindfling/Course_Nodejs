@@ -5,9 +5,9 @@ export const readText = async filePath => {
 
   try {
     const result = await readFile(filePath, 'utf8');
-    console.log(result);
+    console.log(`read result: ${result}`);
     return result;
-  
+    
   } catch (err) {
     console.error(`Ошибка чтения текстового файла ${err.message}`);
   }
@@ -16,10 +16,10 @@ export const readText = async filePath => {
 
 export const read = async (filePath) => {
   // todo filePath check
-
+  
   try {
     const result = await readFile(filePath);
-    console.log('read result: ', result);
+    console.log(result);
     return result;
     
   } catch (err) {

@@ -1,32 +1,36 @@
 // import { copyFile } from "./modules/copyFileCallback.js";
-import { copyFileSync, copyTextFileSync, readDir } from './modules/copyFileSync.js';
+// import { copyFileSync, copyTextFileSync, readDir } from './modules/copyFileSync.js';
 
-const handleCopyError = err => {
-  console.log('\nhello handle');
-  console.error(`МОЙ ОБРАБОТЧИК ОШИБОК handleCopyError:
-    ${err.errno}
-    ${err.code}
-    ${err.syscall}
-    'at PATH' ${err.path}
-`);
-};
+import { readText } from "./modules/readPromise.js";
+import { write } from "./modules/writePromise.js";
+
+
+const readWrite = async (target, dest) => {
+  console.log('target: ', target);
+  console.log('dest: ', dest);
+
+  const data = await readText(target);
+  console.log('data: ', data);
+  await write(dest, data.toUpperCase());
+}
 
 const App = () => {
-  console.log('hello');
+  console.log('hello App');
 
   const fromPath = './files/tex.txt';
   const toPath = './files/tex.bak';
   
   try {
     console.log('\nbefore await');
-    readDir('./files');
-    // copyTextFileSync(fromPath, toPath);
+
+    readWrite(fromPath, toPath)
+
     console.log('after await\n');
 
   } catch (error) {
     console.log('error: ', error);
   } finally {
-    console.log('trying is finished');
+    console.log('trying is finished\n\n');
   }
 }
 
