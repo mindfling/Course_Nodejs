@@ -15,9 +15,7 @@ logger.on('messageLogged', message => {
 // logger.log('Первое сообщение ');
 console.log('logger: ', logger);
 
-logger.log('1 сообщение');
-console.log('logger: ', logger);
-logger.log('22 сообщение');
-console.log('logger: ', logger);
-logger.log('333 сообщение');
-console.log('logger: ', logger);
+logger.log('Самое первое сообщение в очереди');
+logger.log('Собщение номер 2 два сообщение');
+logger.log('Три три три сообщения и три три три раза...');
+logger.log('Loggger');
