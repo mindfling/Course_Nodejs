@@ -68,15 +68,18 @@ export class Logger extends EventEmitter {
     const currentFileSize = this.getFileSize();
     console.log('currentFileSize: ', currentFileSize, 'Bytes');
 
-    if (currentFileSize > 1124) {
-      fs.truncateSync(this._filename, 1024);
-      console.log('файл транкейтер');
+    if (currentFileSize > this._maxSize) {
+      this.rotateLog();
     }
   }
-
-
+  
+  
   rotateLog() {
     // create log.bak
+    fs.copyFileSync(this._filename, `${this._filename}.bak`);
+    console.log('создана резеврная копия лога');
+    fs.truncateSync(this._filename, this._maxSize);
+    console.log('файл транкейтер');
   }
-
+  
 }
