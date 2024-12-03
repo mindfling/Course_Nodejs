@@ -1,5 +1,5 @@
 # node-template-project
 
-## Course_Nodejs
+## Стартовый шаблон node.js
 
-## Стартовый шаблон node.js by Leskin Quper24
+initial node template for Lesson06
