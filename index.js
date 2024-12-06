@@ -43,7 +43,7 @@ const nextQuestion = () => {
 };
 
 const checkAnswer = userAnswer => {
-if (userAnswer != 1 || userAnswer != 2 || userAnswer != 3 ) {
+if (userAnswer != 1 || userAnswer != 2 ) {
 
 } else if (userAnswer === '0') {
     log('Вы ответели 0 ---> команда к завершению игры');
@@ -52,8 +52,6 @@ if (userAnswer != 1 || userAnswer != 2 || userAnswer != 3 ) {
 
 rl.on('line', ans => {
   log(`Вы ответели "${ans}"\n\n`);
-
-  checkAnswer(ans); //todo
 
   if (ans === 'exit' || ans === '0') {
     log('\n\x1b[1;35mЗакрываем приложение');
@@ -69,28 +67,10 @@ rl.on('line', ans => {
 
   nextQuestion();
 
-  // } else if (ans === 'test') {
-  //   log(test);
-  //   rl.emit('line')
-
-  // } else if (ans === 'time') {
-  //   log('now is the time:');
-  //   const time = new Date();
-  //   log(`time is:
-  //     год ${time.getFullYear()} месяц ${time.getMonth()} число ${time.getDate()} день ${time.getDay()}
-  //     `)
-  //   // rl.emit('line')
-  //   nextQuestion();
-  // } else {
-  //   // продолжаем вопросы
-  //   log('\nВаш вариант ответа')
-  //   nextQuestion();
-  //   rl.prompt();
-  // }
 });
 
 rl.on('close', () => {
-  log('\x1b[1;35mGood bye and Good night');
+  log('\x1b[1;35mGood bye');
   // App closed
   process.exit();
 });
