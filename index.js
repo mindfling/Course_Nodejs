@@ -27,23 +27,30 @@ const loadQuiz = async path => {
     .catch(err => {
       console.error(`Ошибка чтения файла "${path}" : ${err.message}`);
     });
+  
+  console.log(`Загружено ${quiz.length} вопросов Квиза`);
   return quiz;
 };
 
 const gameCycle = quiz => {
+  let current = {};
+  let count = 0;
+  let rightAns = 0;
   console.log();
+
   quiz.forEach((qu, i) =>
-    error(
-      `quest ${i}: "${qu.question}" ans=${qu.correctIndex} > right: "${qu.options[qu.correctIndex]}"`,
+    console.log(
+`Вопрос ${i}:
+question ${i} > "${qu.question}"
+${qu.options.map((opt, j) => `opt${j}: ${opt}`).join('\n')}
+ans=${qu.correctIndex} > right: "${qu.options[qu.correctIndex]}"
+`
     ),
   );
   console.log();
 };
 
 const app = async () => {
-  let current = {};
-  let count = 0;
-  let rightAns = 0;
 
   // hello();
   // init();
