@@ -7,16 +7,10 @@ import readline from 'node:readline/promises';
 
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// console.log('__filename: ', __filename);
-// console.log('__dirname: ', __dirname);
-console.log();
-
 
 const file = join(__dirname, 'game/question.json');
 const resultDir = dirname(file);
 const newFile = join(resultDir, basename(file, extname(file)) + '.txt');
-// console.log('file: ', file);
-// console.log('newFile: ', newFile);
 
 
 const loadQuiz = async path => {
@@ -34,8 +28,6 @@ const loadQuiz = async path => {
   console.log(`Загружено ${quiz.length} вопросов Квиза`);
   return quiz;
 };
-
-
 
 
 const gameCycle = async quiz => {
@@ -59,7 +51,7 @@ ${qu.options.map((opt, j) => `${j + 1}. ${opt}`).join('\n')}
 `);
 
     const userAns = await ask.question(`Ваш ответ: `);
-    console.log('userAns: ', userAns, '==', qu.correctIndex);
+    // console.log('userAns: ', userAns, '==', qu.correctIndex);
     if (parseInt(userAns) == (parseInt(qu.correctIndex)+1)) {
       console.log(
         `\x1b[32mПравильный ответ!\x1b[0m\n`,
@@ -84,14 +76,11 @@ ${qu.options.map((opt, j) => `${j + 1}. ${opt}`).join('\n')}
 };
 
 
-
-
 const init = async () => {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
   });
-
   console.log('Hello...');
   const name = await rl.question('Как вас зовут?\n');
   console.log('Приветствуем вас', name);
@@ -100,7 +89,7 @@ const init = async () => {
 }
 
 const app = async () => {
-  // await init();
+  await init();
 
   const quiz = await loadQuiz(file);
   if (!quiz) {
