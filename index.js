@@ -1,6 +1,6 @@
 import { error } from 'node:console';
-import { readFile, writeFile } from 'node:fs/promises';
-import path, { dirname, join, basename, extname, resolve } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import path, { dirname, join, basename, extname } from 'node:path';
 import URL from 'node:url';
 import readline from 'node:readline/promises';
 
@@ -13,20 +13,17 @@ const resultDir = dirname(file);
 const newFile = join(resultDir, basename(file, extname(file)) + '.txt');
 
 
-const loadQuiz = async path => {
-  let quiz = []; //todo
-  await readFile(path)
-    .then(buff => buff.toString('utf8'))
-    .then(text => JSON.parse(text))
+const loadQuiz = async (path) => {
+  return await readFile(path) // читаем файл в буфер
+    .then(buff => buff.toString('utf8')) // перекодируем буфер в строку
+    .then(text => JSON.parse(text)) // парсим текстовую строку в json
     .then(json => {
-      console.log(`файл "${path}" успешно прочитан и распарсин`);
-      quiz = json;
+      console.log(`Файл "${path}" успешно прочитан и распарсин`);
+      return json; // возвращаем объект json
     })
     .catch(err => {
-      console.error(`Ошибка чтения файла "${path}" : ${err.message}`);
+      console.error(`При чтении произошла файла "${path} Ошибка" : ${err.message}`);
     });
-  console.log(`Загружено ${quiz.length} вопросов Квиза`);
-  return quiz;
 };
 
 
@@ -43,15 +40,13 @@ const gameCycle = async quiz => {
 
   let i = 1;
   for (const qu of quiz) {
-    console.log('Вопрос', i, ':');
-    console.log(
-`Вопрос ${i}: "${qu.question}"
-Варианты ответов:
-${qu.options.map((opt, j) => `${j + 1}. ${opt}`).join('\n')}
-`);
+    console.log('Вопрос', i, `из ${quiz.length}:`);
+    console.log(`Вопрос ${i}: "${qu.question}"` + 
+      `Варианты ответов:\n` + 
+      `${qu.options.map((opt, j) => `${j + 1}. ${opt}`).join('\n')}\n`);
 
     const userAns = await ask.question(`Ваш ответ: `);
-    // console.log('userAns: ', userAns, '==', qu.correctIndex);
+
     if (parseInt(userAns) == (parseInt(qu.correctIndex)+1)) {
       console.log(
         `\x1b[32mПравильный ответ!\x1b[0m\n`,
@@ -68,7 +63,6 @@ ${qu.options.map((opt, j) => `${j + 1}. ${opt}`).join('\n')}
   };
 
   ask.close();
-  console.log();
   console.log('Количество правильных ответов:', count, 'из', allQuestions);
   if (count === allQuestions) {
     console.log('Невероятно!!!!!');
@@ -86,18 +80,21 @@ const init = async () => {
   console.log('Приветствуем вас', name);
   console.log();
   rl.close();
+  return name;
 }
 
 const app = async () => {
-  await init();
+  const name = await init();
 
   const quiz = await loadQuiz(file);
   if (!quiz) {
     error('Невозможно загрузить вопросы квиза');
     return;
   }
+  console.log(`Загружено ${quiz.length} вопросов Квиза`);
 
   await gameCycle(quiz);
+  console.log(`Поздравляем вас, ${name},\nВы прошли тест`);
 };
 
 app();
