@@ -7,16 +7,16 @@ import readline from 'node:readline/promises';
 
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log('__filename: ', __filename);
-console.log('__dirname: ', __dirname);
+// console.log('__filename: ', __filename);
+// console.log('__dirname: ', __dirname);
 console.log();
 
 
 const file = join(__dirname, 'game/question.json');
-console.log('file: ', file);
 const resultDir = dirname(file);
 const newFile = join(resultDir, basename(file, extname(file)) + '.txt');
-console.log('newFile: ', newFile);
+// console.log('file: ', file);
+// console.log('newFile: ', newFile);
 
 
 const loadQuiz = async path => {
@@ -38,29 +38,52 @@ const loadQuiz = async path => {
 
 
 
-const gameCycle = quiz => {
+const gameCycle = async quiz => {
+  const ask = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
   let current = {};
+  const allQuestions = quiz.length;
   let count = 0;
   let rightAns = 0;
   console.log();
 
-  quiz.forEach((qu, i) => {
-    console.log();
+  let i = 1;
+  for (const qu of quiz) {
+    console.log('Вопрос', i, ':');
     console.log(
-      `Вопрос ${i + 1}: "${qu.question}"
+`Вопрос ${i}: "${qu.question}"
 Варианты ответов:
 ${qu.options.map((opt, j) => `${j + 1}. ${opt}`).join('\n')}
-Ваш ответ: `,
-    );
+`);
 
-    console.log(
-      `Правильный ответ! был: ${qu.correctIndex + 1} > "${qu.options[qu.correctIndex]}"`,
-    );
+    const userAns = await ask.question(`Ваш ответ: `);
+    console.log('userAns: ', userAns, '==', qu.correctIndex);
+    if (parseInt(userAns) == (parseInt(qu.correctIndex)+1)) {
+      console.log(
+        `\x1b[32mПравильный ответ!\x1b[0m\n`,
+      );
+      count++;
+    } else {
+      console.log('\x1b[31mОтвет неверный\x1b[0m');
+      console.log(
+        `правильный ответ был: ${qu.correctIndex + 1} > "${qu.options[qu.correctIndex]}"\n`,
+      );
+    }
     console.log();
-  });
+    i++;
+  };
 
+  ask.close();
   console.log();
+  console.log('Количество правильных ответов:', count, 'из', allQuestions);
+  if (count === allQuestions) {
+    console.log('Невероятно!!!!!');
+  }
 };
+
+
 
 
 const init = async () => {
@@ -76,9 +99,8 @@ const init = async () => {
   rl.close();
 }
 
-
 const app = async () => {
-  await init();
+  // await init();
 
   const quiz = await loadQuiz(file);
   if (!quiz) {
@@ -86,7 +108,7 @@ const app = async () => {
     return;
   }
 
-  gameCycle(quiz);
+  await gameCycle(quiz);
 };
 
 app();
