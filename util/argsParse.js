@@ -1,18 +1,25 @@
-import {log} from 'node:console';
+import { log } from 'node:console';
 
-export const argsParse = ([, , ...argv]) => {
+export const argsParse = ([, , ...argv], words = []) => {
   // убираем превые два символа через рест
+  log(argv);
   log('lets parse:\n');
-  argv.forEach(value => log(value))
-  log('')
+  argv.forEach(value => log(value));
+  log('');
 
   const args = {};
+
+  if (words.includes(argv[0])) {
+    args[argv[0]] = true;
+  }
+
+
+
   console.log('args: ', args);
-  
+
   // проходим все параметры по циклу
   for (let i = 0; i < argv.length; i++) {
-
-    const current = argv[i]
+    const current = argv[i];
 
     if (argv[i][0] !== '-') {
       // игнорируем значения т.е. строки без "-"
@@ -25,7 +32,7 @@ export const argsParse = ([, , ...argv]) => {
       args[argv[i].substring(4)] = false;
       continue;
     }
-    
+
     if (argv[i].startsWith('--')) {
       log('current: ', current, ' start with -- AND');
       if (argv[i].includes('=')) {
@@ -35,10 +42,10 @@ export const argsParse = ([, , ...argv]) => {
       }
       continue;
     }
-    
+
     if (argv[i + 1] && argv[i + 1][0] !== '-') {
       // т.е. е следщ параметр это значение
-      
+
       if (argv[i].startsWith('--')) {
         log('current: ', current, ' START WITH --');
         // т.е. обрез два символа "--"
@@ -50,10 +57,10 @@ export const argsParse = ([, , ...argv]) => {
       }
       continue;
     }
-    
+
     // т.е. без первых символов  "-" и "--"
     args[argv[i].substring(1)] = true;
   }
-  
+
   return args;
 };
