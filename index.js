@@ -1,16 +1,24 @@
-import { error } from 'node:console';
+#!/usr/bin/env node
+
+import { error, log } from 'node:console';
 import { readFile } from 'node:fs/promises';
+import { read } from './modules/read.js';
+import chalk from 'chalk';
 import path, { dirname, join, basename, extname } from 'node:path';
 import URL from 'node:url';
 import readline from 'node:readline/promises';
+import { stdout, stdin } from 'node:process';
 
 
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const file = join(__dirname, 'game/question.json');
-const resultDir = dirname(file);
-const newFile = join(resultDir, basename(file, extname(file)) + '.txt');
+// const resultDir = dirname(file);
+// const newFile = join(resultDir, basename(file, extname(file)) + '.txt');
+const args = process.argv;
+console.log('args: ', args);
+console.log('argumenst', args.slice(2));
+log('Hello my deear, ', args[2])
 
 
 const loadQuiz = async (path) => {
@@ -18,7 +26,7 @@ const loadQuiz = async (path) => {
     .then(buff => buff.toString('utf8')) // перекодируем буфер в строку
     .then(text => JSON.parse(text)) // парсим текстовую строку в json
     .then(json => {
-      console.log(`Файл "${path}" успешно прочитан и распарсин`);
+      console.log(chalk.gray(`Файл "${path}" успешно прочитан и распарсин`));
       return json; // возвращаем объект json
     })
     .catch(err => {
@@ -27,6 +35,20 @@ const loadQuiz = async (path) => {
 };
 
 
+const init = async () => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  console.log(chalk.blue('Hello...\n'));
+  const name = await rl.question(chalk.blueBright('Как вас зовут?') + '\n');
+  console.log(chalk.cyan('Приветствуем вас'), chalk.cyanBright.bgGray(name));
+  console.log();
+  rl.close();
+  return name;
+}
+
+/*
 const gameCycle = async quiz => {
   const ask = readline.createInterface({
     input: process.stdin,
@@ -68,20 +90,13 @@ const gameCycle = async quiz => {
     console.log('Невероятно!!!!!');
   }
 };
-
-
-const init = async () => {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-  console.log('Hello...');
-  const name = await rl.question('Как вас зовут?\n');
-  console.log('Приветствуем вас', name);
-  console.log();
-  rl.close();
-  return name;
+*/
+/*
+const shuffleQuiz = (quiz) => {
+  // todo
+  return shuffledQuiz;
 }
+*/
 
 const app = async () => {
   const name = await init();
@@ -91,10 +106,26 @@ const app = async () => {
     error('Невозможно загрузить вопросы квиза');
     return;
   }
-  console.log(`Загружено ${quiz.length} вопросов Квиза`);
+  console.log(chalk.cyan(`Загружено ${quiz.length} вопросов Квиза\n`));
 
-  await gameCycle(quiz);
-  console.log(`Поздравляем вас, ${name},\nВы прошли тест`);
+  const rl = readline.createInterface({
+    input: stdin,
+    output: stdout,
+  })
+
+
+
+  rl.on('close', () => {
+    log(chalk.magentaBright('Приложение завершается...\nВсем спокойной ночи'));
+    process.exit(0);
+  })
+
+  quiz.forEach(question => {
+    log(question.question, question.correctIndex)
+  });
+
+  // await gameCycle(quiz);
+  // console.log(`Поздравляем вас, ${name},\nВы прошли тест`);
 };
 
 app();
