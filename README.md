@@ -13,3 +13,14 @@
 ```bash
 chmod +x index.js
 ```
+
+using bash:
+
+```sh
+node cli --help
+```
+
+```sh
+node cli -h 500 -w 1000
+node cli --height=500 -w 1000 --start -no-stop
+```

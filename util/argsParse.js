@@ -7,13 +7,32 @@ export const argsParse = ([, , ...argv]) => {
   log('')
 
   const args = {};
-
+  console.log('args: ', args);
+  
   // проходим все параметры по циклу
   for (let i = 0; i < argv.length; i++) {
+
     const current = argv[i]
+
     if (argv[i][0] !== '-') {
       // игнорируем значения т.е. строки без "-"
       log('current: ', current, ' ИГНОРИРУЕМ БЕЗ -');
+      continue;
+    }
+
+    if (argv[i].startsWith('-no-')) {
+      log('current: ', current, ' -no- false');
+      args[argv[i].substring(4)] = false;
+      continue;
+    }
+    
+    if (argv[i].startsWith('--')) {
+      log('current: ', current, ' start with -- AND');
+      if (argv[i].includes('=')) {
+        log('current: ', current, ' includes =');
+        const [key, value] = argv[i].split('=');
+        args[key.substring(2)] = value;
+      }
       continue;
     }
     
@@ -27,14 +46,14 @@ export const argsParse = ([, , ...argv]) => {
       } else {
         log('current: ', current, ' START WITH -');
         // т.е. обрез первый символ "-"
-        argv[argv[i].substring(1)] = argv[i + 1];
+        args[argv[i].substring(1)] = argv[i + 1];
       }
       continue;
     }
-
+    
     // т.е. без первых символов  "-" и "--"
     args[argv[i].substring(1)] = true;
   }
-
+  
   return args;
 };
