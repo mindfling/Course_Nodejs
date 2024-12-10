@@ -9,13 +9,16 @@ export const argsParse = ([, , ...argv], words = []) => {
 
   const args = {};
 
+  for (const key of words) {
+    args[key] = false;
+  }
+
   if (words.includes(argv[0])) {
     args[argv[0]] = true;
   }
 
 
-
-  console.log('args: ', args);
+  log('args: ', args);
 
   // проходим все параметры по циклу
   for (let i = 0; i < argv.length; i++) {
@@ -23,7 +26,6 @@ export const argsParse = ([, , ...argv], words = []) => {
 
     if (argv[i][0] !== '-') {
       // игнорируем значения т.е. строки без "-"
-      log('current: ', current, ' ИГНОРИРУЕМ БЕЗ -');
       continue;
     }
 
@@ -34,9 +36,7 @@ export const argsParse = ([, , ...argv], words = []) => {
     }
 
     if (argv[i].startsWith('--')) {
-      log('current: ', current, ' start with -- AND');
       if (argv[i].includes('=')) {
-        log('current: ', current, ' includes =');
         const [key, value] = argv[i].split('=');
         args[key.substring(2)] = value;
       }
@@ -47,11 +47,9 @@ export const argsParse = ([, , ...argv], words = []) => {
       // т.е. е следщ параметр это значение
 
       if (argv[i].startsWith('--')) {
-        log('current: ', current, ' START WITH --');
         // т.е. обрез два символа "--"
         args[argv[i].substring(2)] = argv[i + 1];
       } else {
-        log('current: ', current, ' START WITH -');
         // т.е. обрез первый символ "-"
         args[argv[i].substring(1)] = argv[i + 1];
       }

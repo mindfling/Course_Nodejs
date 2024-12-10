@@ -9,8 +9,6 @@ const app = () => {
   const args = argsParse(process.argv, [
     'help',
     'demo',
-    'ready',
-    'steady',
     'go',
     'fly',
     'generate',
@@ -25,11 +23,16 @@ this is my DIm CLI Application help:
 -n --number    | include numbers
 -s --special   | include spec symbols
 -a --ask       | ask for smth ignore
+-g --generate  | generate pass with length of -l
 `;
 
   if (args.h || args.help) {
     // параметр на help
     log('\npass gen app', helpText);
+  }
+
+  if (args.g || args.generate) {
+    log('lets generate pass with length of l', args.l || args.length, 'Bytes');
   }
 };
 
