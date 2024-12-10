@@ -1,24 +1,39 @@
+import {log} from 'node:console';
+
 export const argsParse = ([, , ...argv]) => {
-  // убираем превые два символа через рест  
-  console.log('lets parse');
+  // убираем превые два символа через рест
+  log('lets parse:\n');
+  argv.forEach(value => log(value))
+  log('')
 
   const args = {};
 
   // проходим все параметры по циклу
   for (let i = 0; i < argv.length; i++) {
+    const current = argv[i]
     if (argv[i][0] !== '-') {
-      // убираем значения т.е. строка без "-"
+      // игнорируем значения т.е. строки без "-"
+      log('current: ', current, ' ИГНОРИРУЕМ БЕЗ -');
+      continue;
+    }
+    
+    if (argv[i + 1] && argv[i + 1][0] !== '-') {
+      // т.е. е следщ параметр это значение
+      
+      if (argv[i].startsWith('--')) {
+        log('current: ', current, ' START WITH --');
+        // т.е. обрез два символа "--"
+        args[argv[i].substring(2)] = argv[i + 1];
+      } else {
+        log('current: ', current, ' START WITH -');
+        // т.е. обрез первый символ "-"
+        argv[argv[i].substring(1)] = argv[i + 1];
+      }
       continue;
     }
 
-    if (argv[i+1] && argv[i+1][0] !== '-') {
-      // т.е. е следщ параметр это значение
-      args[argv[i].substring(1)] = argv[i+1]
-    } else {
-      
-      // т.е. без первого символа "-"
-      args[argv[i].substring(1)] = true;
-    }
+    // т.е. без первых символов  "-" и "--"
+    args[argv[i].substring(1)] = true;
   }
 
   return args;
