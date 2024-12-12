@@ -1,4 +1,5 @@
 import { shuffle } from "../util/shuffle.util.js";
+import { log, error, warn } from 'console';
 
 export const generatePassword = option => {
   log({option});

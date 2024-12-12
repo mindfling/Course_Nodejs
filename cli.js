@@ -2,18 +2,14 @@
 
 import { argsParse } from './util/argsParse.js';
 import { log, error, warn } from 'console';
+import { generate } from './util/passGenerate.js';
+import { generatePassword } from './service/generatePassword.service.js';
+
 
 const app = () => {
-  // console.log('process.argv: ', process.argv);
-  // const args = {}
-  const args = argsParse(process.argv, [
-    'help',
-    'demo',
-    'go',
-    'fly',
-    'generate',
-  ]);
-  console.log('\n in application args: ', args);
+  const args = argsParse(process.argv);
+  console.log('\nin application args: ', args);
+
 
   const helpText = `
 this is my DIm CLI Application help:
@@ -32,7 +28,22 @@ this is my DIm CLI Application help:
   }
 
   if (args.g || args.generate) {
-    log('lets generate pass with length of l', args.l || args.length, 'Bytes');
+    log('\nlets generate pass with length of', args.l || args.length, 'Bytes\n');
+    if (isNaN(parseInt(args.length))) {
+      args.length = (isNaN(parseInt(args.l)) ? 8 : args.l);
+    }
+    if (!args.uppercase) {
+      args.uppercase = !!args.u;
+    }
+    if (!args.number) {
+      args.number = !!args.n;
+    }
+    if (!args.special) {
+      args.special = !!args.s;
+    }
+
+    const password = generatePassword(args);
+    console.log('password: ', password);
   }
 };
 
