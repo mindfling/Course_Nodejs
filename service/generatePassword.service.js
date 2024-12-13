@@ -2,7 +2,8 @@ import { shuffle } from "../util/shuffle.util.js";
 import { log, error, warn } from 'console';
 
 export const generatePassword = option => {
-  log({option});
+  log('in generate password', {option});
+  
   let charset = 'abcdefghijklmnopqrstuvwxyz';
 
   if (option.uppercase) {
@@ -14,10 +15,13 @@ export const generatePassword = option => {
   }
 
   if (option.special) {
-    charset += '!@#$%^&*(){}[]_-+=';
+    charset += '!@#$%^&*()+=';
   }
 
-  const result = shuffle(charset.split('')).join('');
+  const result = shuffle(charset.split(''));
+  // result.length = option.length; // ??? //
+  const res = result.slice(0, option.length);
 
-  return result.substring(0, option.length);
+  // return res.substring(0, option.length);
+  return res.join('');
 };

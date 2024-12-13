@@ -1,11 +1,5 @@
-import { log } from 'node:console';
-
 export const argsParse = ([, , ...argv], words = []) => {
   // убираем превые два символа через рест
-  log(argv);
-  log('lets parse:\n');
-  argv.forEach(value => log(value));
-  log('');
 
   const args = {};
 
@@ -17,9 +11,6 @@ export const argsParse = ([, , ...argv], words = []) => {
     args[argv[0]] = true;
   }
 
-
-  log('args: ', args);
-
   // проходим все параметры по циклу
   for (let i = 0; i < argv.length; i++) {
     const current = argv[i];
@@ -30,7 +21,6 @@ export const argsParse = ([, , ...argv], words = []) => {
     }
 
     if (argv[i].startsWith('-no-')) {
-      log('current: ', current, ' -no- false');
       args[argv[i].substring(4)] = false;
       continue;
     }
@@ -39,6 +29,8 @@ export const argsParse = ([, , ...argv], words = []) => {
       if (argv[i].includes('=')) {
         const [key, value] = argv[i].split('=');
         args[key.substring(2)] = value;
+      } else {
+        args[argv[i].substring(2)] = true;
       }
       continue;
     }
