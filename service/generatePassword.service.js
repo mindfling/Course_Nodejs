@@ -1,27 +1,29 @@
 import { shuffle } from "../util/shuffle.util.js";
-import { log, error, warn } from 'console';
+
 
 export const generatePassword = option => {
-  log('in generate password', {option});
-  
+  // по умолчанию мал лат буквы
   let charset = 'abcdefghijklmnopqrstuvwxyz';
-
+  
   if (option.uppercase) {
+    // добав Больш лат буквы
     charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   }
-
+  
   if (option.number) {
+    // добав цифры
     charset += '0123456789';
   }
-
+  
   if (option.special) {
+    // добав другие символы
+    // можно добавить еще //todo
     charset += '!@#$%^&*()+=';
   }
 
-  const result = shuffle(charset.split(''));
-  // result.length = option.length; // ??? //
-  const res = result.slice(0, option.length);
+  // todo добав Кир Cyr
 
-  // return res.substring(0, option.length);
-  return res.join('');
+  const result = shuffle(charset.split(''));
+  // result.length = option.length; // ? Максим в уроке так обрезает лишние символы
+  return result.slice(0, option.length).join('');
 };
