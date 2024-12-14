@@ -2,96 +2,81 @@
 
 import { argsParse } from './util/argsParse.js';
 import { log } from 'node:console';
-import { generate as charset } from './util/charsets.js';
 
+import { readJsonData, readTasks } from './modules/read.js';
+import { writeTasks } from './modules/write.js';
 
 import { dirname, join, basename, extname } from 'node:path';
 import URL from 'node:url';
 
 
-import { readTasks } from './modules/read.js';
-import { writeTasks } from './modules/write.js';
-
-import { readFile } from 'node:fs/promises';
-
-
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-const file = join(__dirname, 'files/todolist.json');
-const resultDir = dirname(file);
-const newFile = join(resultDir, basename(file, extname(file)) + '.txt');
+const todoPath = join(__dirname, 'todolist.json');
 
 
-
-const loadTaskList = async (path) => {
-  return await readFile(path) // читаем файл в буфер
-    .then(buff => buff.toString('utf8')) // перекодируем буфер в строку
-    .then(text => JSON.parse(text)) // парсим текстовую строку в json
-    .then(json => {
-      console.log(`Файл "${path}" успешно прочитан и распарсин`);
-      return json; // возвращаем объект json
-    })
-    .catch(err => {
-      console.error(`При чтении произошла файла "${path} Ошибка" : ${err.message}`);
-    });
-};
-
-
-const readTasks = async () => {
-  const path = './files/tasks.json';
-  const buff = await read(path);
-  const text = buff.toString('utf8');
-  const taskList = JSON.parse(text);
-  return taskList;
-}
-
-const writeTasks = async (path, json) => {
-  const text = JSON.stringify(json);
-  await write(path, text);
-}
-
-
-const app = () => {
+const app = async () => {
   const args = process.argv;
 
+  // список доступных команд
   const words = [
     'add',
     'list',
     'update',
     'get',
     'delete',
-    // 'test'
+    'help'
   ];
 
-  const options = argsParse([, , ...args], words);
+  const options = argsParse(args, words); //?
+  let taskList = [];
+  taskList = await readJsonData(todoPath);
 
-  const taskList = []
+  const newTask = {
+    // id: 1,
+    title: 'Помыть слона',
+    status: 'Выполнено',
+  }
+
 
   // todo add
+  // add <"task":string>: добавить новую задачу.
   if (options.add) {
-    taskList = await readTasks()
-    taskList.push({
-      id: 1,
-      title: 'Купить слона',
-      status: 'undone',
+    // taskList = readTasks() //
+    const id = taskList.push({
+      // id: 1, // ! id это просто номер списка
+      title: options.add,
+      status: 'В работе',
     })
-    await writeTasks(taskList)
-    log('Задача добавлена с идентефикатором', task.id)
+    // writeTasks(taskList)
+    log('Задача добавлена с идентефикатором', id)
   }
+
 
   // todo list
+  // list: вывести список всех задач.
   if (options.list) {
-    taskList = readTasks()
-    log('Список задач:')
+    taskList = readJsonData(todoPath); // здесь читаем todolist.json
+    log(`Список задач:`)
     taskList.forEach((task, index) => {
-      log(`${task.id}. [${task.status}] ${task.title}`)
+      log(`\x1b[33m${index}. \x1b[0m[${task.status}] ${task.title}`);
     })
   }
 
+
   // todo update N title
+  // update <id:number> <"newTask":string>:
+  // обновить задачу с указанным идентификатором.
+  // todo options.update = updatedTask
+  updatedTask = {
+    id: N,
+    title: 'Обновленный title',
+    status: 'тот же'
+  }
+  // т.е. обновляем title задачи номер id
   if (options.update) {
-    log(`Задача с идентефикатором ${task.id} обновлена`)
+
+    log(`Задача с идентефикатором ${id} обновлена`)
   }
 
   // todo status N 
@@ -101,15 +86,18 @@ const app = () => {
     log(`Статус задачи с идентефикатором ${task.id} обновлен`)
   }
 
+
   // todo get
+  // get <id:number>: вывести информацию о задаче с указанным идентификатором.
   if (options.get) {
     const id = options.get;
-    const task = getTask(id);
-    log(`задача с идентефикатором ${task.id}:
-        Название: ${task.title}
-        Статус: ${task.status}
-    `);
+    // todo validate id number (id=1..len)
+    const task = taskList[id];
+    log(`задача с идентефикатором ${id}:` +
+        `Название: ${task?.title}` +
+        `Статус: ${task?.status}`);
   }
+
 
   // todo delete
   if (options.delete || options.del) {
