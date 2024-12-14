@@ -11,21 +11,25 @@ const isCorrect = (l) => {
   return !isNaN(parseInt(l));
 }
 
-
 const app = () => {
   const args = argsParse(process.argv);
 
   const options = {
     length: 8,
-    uppercase: true,
-    number: true,
+    uppercase: false,
+    number: false,
     special: false,
   };
 
   if (args.a || args.ask) {
-    log('\nГенерируем пароль по умолчанию');
+    log(chalk.greenBright('\nГенерируем пароль по умолчанию'));
     log('default password:\n');
-    log(generatePassword(options));
+    log(generatePassword({
+      length: 8,
+      uppercase: true,
+      number: true,
+      special: false,
+    }));
     return;
   }
 
@@ -61,7 +65,7 @@ Options:
     return;
   }
 
-  log('\nГенирируем пароль с задаными параметрами');
+  log(chalk.greenBright('\nГенирируем пароль с задаными параметрами'));
 
   if (isCorrect(args.l) || isCorrect(args.length)) {
     options.length = isCorrect(args.l) ? args.l
@@ -71,24 +75,28 @@ Options:
   }
 
   if (args.u || args.upper || args.uppercase) {
-    log('[x] Большие СТРОЧНЫЕ буквы', chalk.blueBright('включены'));
+    log(`[${chalk.blueBright('x')}] Большие СТРОЧНЫЕ буквы`,
+      chalk.blueBright('включены'));
     options.uppercase = args.u || args.uppercase;
   } else {
-    log('[ ] большие СТРОЧНЫЕ буквы');
+    log('[ ] Большие СТРОЧНЫЕ буквы');
   }
 
   if (args.n || args.number || args.numbers) {
-    log('[x] Цифры', chalk.blueBright('включены'));
+    log(`[${chalk.blueBright('x')}] Цифры ${chalk.blueBright('включены')}`);
     options.number = args.n || args.number || args.numbers;
   } else {
-    log('[ ] цифры');
+    log('[ ] Цифры');
   }
 
   if (args.s || args.spec || args.special) {
-    log('[x] Специальные символы', chalk.blueBright('включены'));
+    log(
+      '[' + chalk.blueBright('x') + '] Специальные символы',
+      chalk.blueBright('включены'),
+    );
     options.special = args.s || args.spec || args.special;
   } else {
-    log('[ ] специальные символы');
+    log('[ ] Специальные символы');
   }
 
   const password = generatePassword(options);

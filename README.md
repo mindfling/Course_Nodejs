@@ -51,3 +51,5 @@ FgCyan = "\x1b[36m"    BgCyan = "\x1b[46m"
 FgWhite = "\x1b[37m"   BgWhite = "\x1b[47m"
 FgGray = "\x1b[90m"    BgGray = "\x1b[100m"
 ```
+
+[how-to-change-node-jss-console-font-color](https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color)
