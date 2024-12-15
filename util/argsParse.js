@@ -3,15 +3,7 @@ const isText = (str) => isNaN(parseInt(str));
 const isNumber = (str) => !isNaN(parseInt(str));
 
 export const argsParse = ([, , ...argv], words = [], commands = {}) => {
-  // убираем превые два символа через рест
-  // console.log('parse argv: ', argv);
-  // console.log('parse words: ', words);
-
   const args = {};
-  // console.log('parse args: ', args);
-
-  const command = argv[0];
-  // console.log('parse command: ', command);
 
   for (const word of words) {
     // выставляем все опции в значения поумолчанию false
@@ -27,22 +19,22 @@ export const argsParse = ([, , ...argv], words = [], commands = {}) => {
     if (argv[1]) {
       // если есть 1й параметр
       if (isText(argv[1])) {
-        // 1й - если НЕчисло то это text: title или status
+        // если НЕчисло то это text: title или status
         args['text'] = argv[1];
-        console.log('1й параметр текст');
+        // console.log('1й параметр текст');
       } else {
-        // 1й - если ЧИСЛО то это id
-        console.log('1й параметр число');
+        // если ЧИСЛО то это id
+        // console.log('1й параметр число');
         args['id'] = argv[1];
       }
     }
 
-    if (argv[2] && isNaN(parseInt(argv[2]))) {
+    if (argv[2] && isText(argv[2])) {
       // если есть 2й параметр
-      args['text'] = argv[2]; // title OR status; // 2й - это
+      // если текст то это текстовое значение title OR status;
+      args['text'] = argv[2];
     }
   }
-  console.log();
 
 
   // проходим все параметры по циклу
@@ -85,6 +77,7 @@ export const argsParse = ([, , ...argv], words = [], commands = {}) => {
     // т.е. без первых символов  "-" и "--"
     args[argv[i].substring(1)] = true;
   }
+
 
   return args;
 };
