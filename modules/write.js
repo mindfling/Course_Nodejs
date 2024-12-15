@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 
-// Запись данных в файл на промисах
-// todo возможно нужно проверять пути path
+// todo проверять пути path
+// Запись любых данных в файл на промисах
 export const write = async (path, data) => {
   try {
     console.log(`Данные: ${data}`);
@@ -15,21 +15,12 @@ export const write = async (path, data) => {
 
 
 // todo
-// Читает данные из json файла
-// декодирует парсит и возвращает готовый json объект
-export const writeJsonData = async (path, data) => {
-  //     return json; // возвращаем объект json
-  //   })
-  //   .catch(err => {
-  //     console.error(`При чтении произошла файла "${path} Ошибка" : ${err.message}`);
-  //   });
-  const text = JSON.stringify(data);
-  console.log('text: ', text, 'ЗАПИСАНО');
-  await write(path, text);
+// Кодирует и Записывает данные в файл на промисах
+export const writeJsonData = async (path, json) => {
+  try {
+    const text = JSON.stringify(json);
+    return await write(path, text);
+  } catch (err) {
+    console.error(`При обработке json и записи возникла Ошибка : ${err.message}`);
+  }
 };
-
-
-const writeTasks = async (path, json) => {
-  const text = JSON.stringify(json);
-  await write(path, text);
-}

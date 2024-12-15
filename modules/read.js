@@ -25,12 +25,11 @@ export const readJsonData = async (path) => {
       return json; // возвращаем объект json
     })
     .catch(err => {
-      console.error(`При чтении произошла файла "${path} Ошибка" : ${err.message}`);
+      console.error(`При чтении и парсинге произошла Ошибка" : ${err.message}`);
     });
 };
 
-
-
+/*
 const loadTaskList = async (path) => {
   return await readFile(path) // читаем файл в буфер
     .then(buff => buff.toString('utf8')) // перекодируем буфер в строку
@@ -40,18 +39,7 @@ const loadTaskList = async (path) => {
       return json; // возвращаем объект json
     })
     .catch(err => {
-      console.error(`При чтении произошла файла "${path} Ошибка" : ${err.message}`);
+      console.error(`При чтении и парсинге произошла Ошибка" : ${err.message}`);
     });
 };
-
-
-
-
-const readTasks = async () => {
-  const path = './files/tasks.json';
-  const buff = await read(path);
-  const text = buff.toString('utf8');
-  const taskList = JSON.parse(text);
-  return taskList;
-}
-
+*/
