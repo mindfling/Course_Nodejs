@@ -1,10 +1,9 @@
 import fs from 'node:fs/promises';
 
-// todo проверять пути path
 // Запись любых данных в файл на промисах
 export const write = async (path, data) => {
   try {
-    console.log(`Данные: ${data}`);
+    // console.log(`Данные: ${data}`);
     await fs.writeFile(path, data);
     console.log(`записали в файл "${path}"`);
     return true;
@@ -14,7 +13,6 @@ export const write = async (path, data) => {
 };
 
 
-// todo
 // Кодирует и Записывает данные в файл на промисах
 export const writeJsonData = async (path, json) => {
   try {
