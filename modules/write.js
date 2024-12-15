@@ -14,23 +14,19 @@ export const write = async (path, data) => {
 };
 
 
-
+// todo
 // Читает данные из json файла
 // декодирует парсит и возвращает готовый json объект
 export const writeJsonData = async (path, data) => {
-  // return await read(path) // читаем файл в буфер
-  //   .then(buff => buff.toString('utf8')) // перекодируем буфер в строку
-  //   .then(text => JSON.parse(text)) // парсим текстовую строку в json
-  //   .then(json => {
-  //     console.log(`Файл "${path}" успешно прочитан и распарсин`);
   //     return json; // возвращаем объект json
   //   })
   //   .catch(err => {
   //     console.error(`При чтении произошла файла "${path} Ошибка" : ${err.message}`);
   //   });
-  await writeTasks(path, data);
+  const text = JSON.stringify(data);
+  console.log('text: ', text, 'ЗАПИСАНО');
+  await write(path, text);
 };
-
 
 
 const writeTasks = async (path, json) => {

@@ -11,19 +11,31 @@ import chalk from 'chalk';
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const todoPath = join(__dirname, 'todolist.json'); // путь к файлу БД
-console.log('todoPath: ', todoPath);
 
 
-
-
-
+const init = async () => {
+  const taskList = await readJsonData(todoPath); // ? // todo
+  if (taskList) {
+    log(chalk.green(`Файл списка задач в текущем каталоге найден... Ok`));
+  } else {
+    log(chalk.magenta('Не могу прочитать файл списка задач в текущем каталоге... Error'));
+    const newTaskList = [{
+      title: '',
+      status: ''
+    }];
+    await writeJsonData(todoPath, newTaskList);
+  }
+}
 
 const app = async () => {
+  await init();
+
   const args = process.argv;
-  console.log('args: ', args);
 
   // список доступных команд array
   const words = ['add', 'list', 'update', 'get', 'delete', 'status', 'help'];
+
+  // todo help
 
   // список слов комманд in object
   const commands = {
@@ -47,21 +59,19 @@ const app = async () => {
 
   // func init();
   const options = argsParse(args, words, commands); //?
-  console.log('РАСПАРСЕРЕННЫЕ options: ', options);
+  // console.log('РАСПАРСЕРЕННЫЕ options: ', options);
 
-  log('\ntodoPath: ', todoPath);
-  // const taskList = await readJsonData(todoPath);
+  log('\ntodoPath: ', todoPath, chalk.green('прочитано... Ok'));
+  // const taskList = await readJsonData(todoPath); // ? // todo
 
 
+  // выводит список задач
   const printTaskList = list => {
-    // list = readJsonData(todoPath); // здесь читаем todolist.json
-    log();
-    log(`Список задач:`);
+    log(`\nСписок задач:`);
     list.forEach((task, index) => {
-      log(`\x1b[33m${index + 1}. \x1b[0m[${task.status}] ${task.title}`);
+      log(`${chalk.yellow(index + 1)}. [ ${task.status} ] ${task.title}`);
     });
   };
-
 
   // todo list
   // list: вывести список всех задач.
