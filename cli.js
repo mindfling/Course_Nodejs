@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import { argsParse } from './util/argsParse.js';
 import { log } from 'console';
 import { generatePassword } from './service/generatePassword.service.js';
+import { getPasswordOptions } from './service/getPasswordOptions.service.js';
 
 
 const isCorrect = (l) => {
@@ -11,7 +12,7 @@ const isCorrect = (l) => {
   return !isNaN(parseInt(l));
 }
 
-const app = () => {
+const app = async () => {
   const args = argsParse(process.argv);
 
   const options = {
@@ -21,16 +22,24 @@ const app = () => {
     special: false,
   };
 
-  if (args.a || args.ask) {
-    log(chalk.greenBright('\nГенерируем пароль по умолчанию'));
-    log('default password:\n');
-    // default generate
+  if (args.g || args.gen || args.generate) {
+    log(chalk.green('Генерируем пароль по умолчанию'));
+    log(chalk.greenBright('Generate default password:\n'));
     log(generatePassword({
       length: 8,
       uppercase: true,
       number: true,
-      special: false,
+      special: true,
     }));
+    return;
+  }
+
+  if (args.a || args.ask) {
+    log(chalk.greenBright('\nВводим парамертры пароля вручную'));
+    log('Ответьте на вопросы')
+    const options = await getPasswordOptions();
+    log();
+    log(generatePassword(options));
     return;
   }
 
@@ -43,7 +52,7 @@ Options:
 -u --uppercase | include uppercase
 -n --number    | include numbers
 -s --special   | include spec symbols
--a --ask       | ask for promt options (ignore all other params and )
+-a --ask       | ask for promt options (ignore all other params)
 -g --generate  | generate pass demo
 `;
 
