@@ -13,8 +13,8 @@ const isCorrect = (l) => {
 }
 
 const app = async () => {
-  const args = argsParse(process.argv);
-
+  const args = argsParse(process.argv, ['ask']);
+  
   const options = {
     length: 8,
     uppercase: false,
@@ -64,7 +64,6 @@ Options:
   }
   
   if (
-    !args.h && !args.help &&
     !args.l && !args.length &&
     !args.u && !args.uppercase &&
     !args.n && !args.number &&
@@ -72,11 +71,14 @@ Options:
     !args.a && !args.ask
   ) {
     // подсказка для вызова помощи
-    log('\n\x1b[32mFor read cli help use --help or -h flags\x1b[0m');
+    log(chalk.green('\nFor read cli help use --help or -h flags'));
     return;
   }
 
   log(chalk.greenBright('\nГенирируем пароль с задаными параметрами'));
+
+
+// todo ОТДЕЛЬНЫЙ ВЫВОД ПАРАМЕТРОВ
 
   if (isCorrect(args.l) || isCorrect(args.length)) {
     options.length = isCorrect(args.l) ? args.l
@@ -109,6 +111,8 @@ Options:
   } else {
     log('[ ] Специальные символы');
   }
+
+
 
   const password = generatePassword(options);
   log(chalk.green('\npassword:'), password);
