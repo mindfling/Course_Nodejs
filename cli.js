@@ -24,6 +24,7 @@ const app = () => {
   if (args.a || args.ask) {
     log(chalk.greenBright('\nГенерируем пароль по умолчанию'));
     log('default password:\n');
+    // default generate
     log(generatePassword({
       length: 8,
       uppercase: true,
@@ -38,12 +39,13 @@ This is cli application for generating passwords:
 Usage: \x1b[33mnode cli options:[-u|-n|-s] [-l <Bytes>]\x1b[0m
 Options:
 -h --help      | print this help
--l --length    | length of password (by default length=8)
+-l --length    | length of password (by default [length=8])
 -u --uppercase | include uppercase
 -n --number    | include numbers
 -s --special   | include spec symbols
--a --ask       | ask for ignore all other params
--g --generate  | generate pass demo`;
+-a --ask       | ask for promt options (ignore all other params and )
+-g --generate  | generate pass demo
+`;
 
   if (args.h || args.help) {
     // параметр на help
