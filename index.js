@@ -23,7 +23,7 @@ const init = async () => {
       title: '',
       status: ''
     }];
-    await writeJsonData(todoPath, newTaskList);
+    await writeJsonData(todoPath, []);
   }
 }
 
@@ -61,7 +61,7 @@ const app = async () => {
   const options = argsParse(args, words, commands); //?
   // console.log('РАСПАРСЕРЕННЫЕ options: ', options);
 
-  log('\ntodoPath: ', todoPath, chalk.green('прочитано... Ok'));
+  log('\ntodoPath: ', todoPath);
   // const taskList = await readJsonData(todoPath); // ? // todo
 
 

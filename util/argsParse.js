@@ -4,14 +4,14 @@ const isNumber = (str) => !isNaN(parseInt(str));
 
 export const argsParse = ([, , ...argv], words = [], commands = {}) => {
   // убираем превые два символа через рест
-  console.log('parse argv: ', argv);
-  console.log('parse words: ', words);
+  // console.log('parse argv: ', argv);
+  // console.log('parse words: ', words);
 
   const args = {};
-  console.log('parse args: ', args);
+  // console.log('parse args: ', args);
 
   const command = argv[0];
-  console.log('parse command: ', command);
+  // console.log('parse command: ', command);
 
   for (const word of words) {
     // выставляем все опции в значения поумолчанию false
@@ -26,7 +26,7 @@ export const argsParse = ([, , ...argv], words = [], commands = {}) => {
 
     if (argv[1]) {
       // если есть 1й параметр
-      if (isNaN(parseInt(argv[1]))) {
+      if (isText(argv[1])) {
         // 1й - если НЕчисло то это text: title или status
         args['text'] = argv[1];
         console.log('1й параметр текст');
@@ -42,15 +42,7 @@ export const argsParse = ([, , ...argv], words = [], commands = {}) => {
       args['text'] = argv[2]; // title OR status; // 2й - это
     }
   }
-
   console.log();
-  // console.log('ПЕРЕБОР КОМАНД');
-  // for (const key in commands) {
-  //   // log(word, commands[word]);
-  //   // log(com, !!com, !!commands[com])
-  //   console.log(key, commands[key]);
-  // }
-  // console.log();
 
 
   // проходим все параметры по циклу
