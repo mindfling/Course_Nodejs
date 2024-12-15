@@ -1,6 +1,6 @@
 import { shuffle } from "../util/shuffle.util.js";
 
-
+// ? не самый универсальный генератор
 export const generatePassword = option => {
   // по умолчанию мал лат буквы
   let charset = 'abcdefghijklmnopqrstuvwxyz';
@@ -21,9 +21,19 @@ export const generatePassword = option => {
     charset += '!@#$%^&*()+=';
   }
 
-  // todo добав Кир Cyr
-
-  const result = shuffle(charset.split(''));
-  // result.length = option.length; // ? Максим в уроке так обрезает лишние символы
-  return result.slice(0, option.length).join('');
+  // todo добав Кир: cyr and CYR
+  if (option.lowercyrus) {
+    // добавить мал строчные буквы кириллицы
+    charset += 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя';
+  }
+  
+  if (option.uppercyrus) {
+    // добавить Большие ЗАГЛАВНЫЕ буквы кириллицы
+    charset += 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+  }
+  
+  // const result = shuffle(charset.split(''));
+  // // ? Максим в уроке так обрезает лишние символы
+  // result.length = option.length;
+  return shuffle(charset.split('')).slice(0, option.length).join('');
 };

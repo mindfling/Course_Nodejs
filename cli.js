@@ -22,6 +22,7 @@ const app = async () => {
     special: false,
   };
 
+  // todo generate
   if (args.g || args.gen || args.generate) {
     log(chalk.green('Генерируем пароль по умолчанию'));
     log(chalk.greenBright('Generate default password:\n'));
@@ -34,13 +35,12 @@ const app = async () => {
     return;
   }
 
+  // todo ask
   if (args.a || args.ask) {
     log(chalk.greenBright('\nВводим парамертры пароля вручную'));
-    log('Ответьте на вопросы')
-    const options = await getPasswordOptions();
-    log();
-    log(generatePassword(options));
-    return;
+    log('Ответьте на вопросы');
+    // запускаем промпт и копируем новые параметры в options
+    Object.assign(options, {...(await getPasswordOptions())});
   }
 
   const helpText = `
@@ -56,10 +56,12 @@ Options:
 -g --generate  | generate pass demo
 `;
 
+  // todo help
   if (args.h || args.help) {
     // параметр на help
     log('\n\x1b[32mRead this cli --help or -h flags for the help\x1b[0m');
     log(helpText);
+    process.exit();
     return;
   }
   
@@ -70,52 +72,93 @@ Options:
     !args.s && !args.special &&
     !args.a && !args.ask
   ) {
-    // подсказка для вызова помощи
+    // подсказка для вызова помощи нет правильных параметров
     log(chalk.green('\nFor read cli help use --help or -h flags'));
+    process.exit();
     return;
   }
 
   log(chalk.greenBright('\nГенирируем пароль с задаными параметрами'));
 
 
-// todo ОТДЕЛЬНЫЙ ВЫВОД ПАРАМЕТРОВ
-
+  // * args to options
+  
+  // todo l -> options.length
   if (isCorrect(args.l) || isCorrect(args.length)) {
     options.length = isCorrect(args.l) ? args.l
       : (isCorrect(args.length)
         ? args.length : options.length);
+  }
+  
+  // todo upper -> options.uppercase
+  if (args.u || args.upper || args.uppercase) {
+    options.uppercase = (args.u || args.upper || args.uppercase);
+  }
+  
+  // todo numb -> options.number
+  if (args.n || args.numb || args.number || args.numbers) {
+    options.number = args.n || args.numb || args.number || args.numbers;
+  }
+
+  // todo spec -> options.special
+  if (args.s || args.spec || args.special) {
+    options.special = args.s || args.spec || args.special;
+  } 
+
+
+  // * ВЫВОД НА ЭКРАН
+  
+  // todo options.length
+  if (options.length) {
     log('Количество символов =', +options.length)
   }
 
-  if (args.u || args.upper || args.uppercase) {
-    log(`[${chalk.blueBright('x')}] Большие СТРОЧНЫЕ буквы`,
-      chalk.blueBright('включены'));
-    options.uppercase = args.u || args.uppercase;
+  // todo uppercase
+  if (options.uppercase) {
+    log(`[${chalk.blueBright('x')}] Большие СТРОЧНЫЕ буквы`, chalk.blueBright('включены'));
   } else {
     log('[ ] Большие СТРОЧНЫЕ буквы');
   }
 
-  if (args.n || args.number || args.numbers) {
+  // todo number
+  if (options.number) {
     log(`[${chalk.blueBright('x')}] Цифры ${chalk.blueBright('включены')}`);
-    options.number = args.n || args.number || args.numbers;
   } else {
     log('[ ] Цифры');
   }
 
-  if (args.s || args.spec || args.special) {
+  // todo special
+  if (options.special) {
     log(
       '[' + chalk.blueBright('x') + '] Специальные символы',
       chalk.blueBright('включены'),
     );
-    options.special = args.s || args.spec || args.special;
   } else {
     log('[ ] Специальные символы');
   }
 
+  // todo lowercyrus
+  if (options.lowercyrus) {
+    log(
+      '[' + chalk.blueBright('x') + '] Строчные буквы кириллицы',
+      chalk.blueBright('включены'),
+    );
+  } else {
+    log('[ ] Строчные буквы кириллицы');
+  }
 
+  // todo uppercyrus
+  if (options.uppercyrus) {
+    log(
+      '[' + chalk.blueBright('x') + '] ЗАГЛАВНЫЕ Большие буквы кириллицы',
+      chalk.blueBright('включены'),
+    );
+  } else {
+    log('[ ] ЗАГЛАВНЫЕ Большие буквы кириллицы');
+  }
 
   const password = generatePassword(options);
-  log(chalk.green('\npassword:'), password);
+  log(chalk.green('\nPassword:'), password);
 };
 
 app();

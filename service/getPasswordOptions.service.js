@@ -25,6 +25,16 @@ export const getPasswordOptions = async () => {
       await rl.question('Добавить специальные символы? (y/n) [y] : ')
     ).toLowerCase() || 'y') === 'y';
 
+  const lowercyrus =
+    ((
+      await rl.question('Добавить строчные буквы кириллицы? (y/n) [y] : ')
+    ).toLowerCase() || 'y') === 'y';
+
+  const uppercyrus =
+    ((
+      await rl.question('Добавить Большие ЗАГЛАВНЫЕ буквы кириллицы? (y/n) [y] : ')
+    ).toLowerCase() || 'y') === 'y';
+
   rl.close();
 
   return {
@@ -32,5 +42,7 @@ export const getPasswordOptions = async () => {
     uppercase,
     number,
     special,
+    lowercyrus,
+    uppercyrus,
   };
 };
