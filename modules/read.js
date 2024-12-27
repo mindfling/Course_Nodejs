@@ -28,18 +28,3 @@ export const readJsonData = async (path) => {
       console.error(`При чтении и парсинге произошла Ошибка" : ${err.message}`);
     });
 };
-
-/*
-const loadTaskList = async (path) => {
-  return await readFile(path) // читаем файл в буфер
-    .then(buff => buff.toString('utf8')) // перекодируем буфер в строку
-    .then(text => JSON.parse(text)) // парсим текстовую строку в json
-    .then(json => {
-      console.log(`Файл "${path}" успешно прочитан и распарсин`);
-      return json; // возвращаем объект json
-    })
-    .catch(err => {
-      console.error(`При чтении и парсинге произошла Ошибка" : ${err.message}`);
-    });
-};
-*/
