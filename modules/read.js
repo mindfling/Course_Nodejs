@@ -11,6 +11,7 @@ export const read = async path => {
     return data;
   } catch (err) {
     console.error(`Ошибка чтения файла "${path}" : ${err.message}`);
+    return;
   } 
 };
 
