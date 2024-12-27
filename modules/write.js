@@ -5,7 +5,7 @@ export const write = async (path, data) => {
   try {
     // console.log(`Данные: ${data}`);
     await fs.writeFile(path, data);
-    console.log(`записали в файл "${path}"`);
+    // console.log(`записали в файл "${path}"`);
     return true;
   } catch (err) {
     console.error(`Ошибка записи в файл "${path}" : ${err.message}`);
@@ -22,3 +22,16 @@ export const writeJsonData = async (path, json) => {
     console.error(`При обработке json и записи возникла Ошибка : ${err.message}`);
   }
 };
+
+
+// тоже самое с writeFile
+// принимает объект, переводит в json, запис в файл как простой текст
+export const writeData = async (path, json) => {
+  try {
+    const text = JSON.stringify(json);
+    await fs.writeFile(path, text);
+    return true;
+  } catch (err) {
+    console.error(`При обработке json и записи в файл "${path}" возникли непредвиденные ошибки : ${err.message}`);
+  }
+}
