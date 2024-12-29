@@ -1,42 +1,51 @@
 #!/usr/bin/env node
-import readline from 'node:readline/promises';
 
+// import readline from 'node:readline/promises';
+import { createInterface } from 'node:readline/promises';
+// import fs, { readFile, writeFile } from 'node:fs/promises';
 import { log, error } from 'node:console';
-
-import { dirname, join, basename, extname } from 'node:path';
+import path, { dirname, join, } from 'node:path';
 import URL from 'node:url';
+import { read } from './modules/read.js';
+import process, { stdin as input, stdout as output } from 'node:process';
 
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const testFile = join(__dirname, './files/test.txt');
+const testFile = join(__dirname, './files/test.txt'); // 'files/test.txt';
+const filebase = path.parse(testFile).base;  //=> "test.txt"
+const filename = path.parse(testFile).name;  //=> "test"
+const fileexts = path.parse(testFile).ext;   //=> ".txt"
+
 
 console.log('__filename: ', __filename);
 console.log('__dirname: ', __dirname);
 console.log('testFile: ', testFile);
+console.log('filebase: ', filebase);
+console.log('filename: ', filename);
+console.log('fileexts: ', fileexts);
 
-
-// import fs, { readFile, writeFile } from 'node:fs/promises';
-import { read } from './modules/read.js'; // ? указывать ли .js в конце
-import process, { stdin as input, stdout as output } from 'node:process';
-
-// const result = text.replace(/string to be replaced/g, 'replacement');
-// const result = str.replace("Привет", 'replacement');
+const file = testFile;
+const extension = path.extname(file);
+const base = path.basename(file);
+// basename в начале строки обрезается расширением файла строкой в конце
+const name = path.basename(file, '.txt')
+// const name = path.basename(file, extension)
+log()
+console.log('name: ', name);
+console.log('base: ', base);
+console.log('extension: ', extension);
+console.log('file: ', file);
 
 
 const promptUserOptions = async (option) => {
-  const rl = readline.createInterface({
-    input,
-    output,
-    prompt: '#',
-  });
+  const rl = createInterface({ input, output });
   option.rl = rl; // передаем настройки через объект аргумент
   option.name = (await rl.question('Введите имя папки : ')) || testFile;
   option.find = await rl.question('Введите Текст для поиска : ');
   if (option.find) {
-    console.log(option.find);
     option.findRexExp = new RegExp(option.find, 'gi'); // собираем регулярное выражение через Строку поиска
+    console.log(option.findRexExp);
   }
-  console.log('option.findRexExp: ', option.findRexExp);
   option.replace = await rl.question('Введите Текст для замены : ');
   return option;
 }
@@ -86,4 +95,4 @@ const app = async () => {
 }
 
 
-app();
+// app();
