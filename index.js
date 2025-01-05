@@ -2,12 +2,13 @@
 
 // import readline from 'node:readline/promises';
 import { createInterface } from 'node:readline/promises';
-// import fs, { readFile, writeFile } from 'node:fs/promises';
+import fs, { readFile, writeFile } from 'node:fs/promises';
+import { createReadStream, createWriteStream } from 'node:fs';
 import { log, error } from 'node:console';
 import path, { dirname, join, } from 'node:path';
 import URL from 'node:url';
 import { read } from './modules/read.js';
-import process, { stdin as input, stdout as output } from 'node:process';
+import process, { stdin, stdout } from 'node:process';
 
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,6 +38,24 @@ console.log('extension: ', extension);
 console.log('file: ', file);
 
 
+(async (arg) => {
+  log('test', testFile);
+
+  const rl = createInterface({
+    input: createReadStream(testFile),
+    output: createWriteStream('./out.txt'),
+    crlfDelay: Infinity,
+  });
+
+  for await (const line of rl) {
+    const str = `lines:  ${line}\n`;
+    rl.output.write(str)
+  }
+})();
+
+
+
+/*
 const promptUserOptions = async (option) => {
   const rl = createInterface({ input, output });
   option.rl = rl; // передаем настройки через объект аргумент
@@ -49,12 +68,12 @@ const promptUserOptions = async (option) => {
   option.replace = await rl.question('Введите Текст для замены : ');
   return option;
 }
-
+*/
 
   // const fileName = './files/testa.txt';
   // const textFind = 'Приветы'
   // const textReplace = 'Как дела'
-
+/*
 const app = async () => {
   console.log('Hello text replace');
 
@@ -93,6 +112,9 @@ const app = async () => {
   options.rl.close(); // закрываем поток ввода вывода
   process.exit(); // завершам процес программы
 }
-
+*/
 
 // app();
+
+
+
