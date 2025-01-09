@@ -3,6 +3,33 @@ import * as os from 'node:os';
 import { Buffer } from 'node:buffer';
 
 
+const c = {
+  red(str) {
+    return `\x1b[31m${str}\x1b[0m`;
+  },
+  green(str) {
+    return `\x1b[32m${str}\x1b[0m`;
+  },
+  yellow(str) {
+    return `\x1b[33m${str}\x1b[0m`;
+  },
+  blue(str) {
+    return `\x1b[34m${str}\x1b[0m`;
+  },
+  magenta(str) {
+    return `\x1b[35m${str}\x1b[0m`;
+  },
+  cyan(str) {
+    return `\x1b[36m${str}\x1b[0m`;
+  },
+  white(str) {
+    return `\x1b[37m${str}\x1b[0m`;
+  },
+  grey(str) {
+    return `\x1b[90m${str}\x1b[0m`;
+  },
+};
+
 
 // ОБЩАЯ ИНФОРМАЦИЯ
 const info = () => {
@@ -40,30 +67,43 @@ const infoMemory = (arg) => {
   const mem = os.totalmem();
   const free = os.freemem();
   const used = mem - free;
-  const memoryUsage = ((used / mem) * 100).toFixed(2) + ' %';
+  const memoryUsage = ((used / mem) * 100).toFixed(2);
   
-  console.log('memory Usage: ', memoryUsage);
   log(
-    'Total:\t', mem,
-    'Байт', mem / 1024,
-    'кБайт', mem / (1024 * 1024),
-    'МБайт\x1b[36m', (mem / 2 ** 30).toFixed(2),
-    '\x1b[0mГБайт',
-  ); // mem
+    c.blue('Total:\t'),
+    c.cyan((mem / 2 ** 30).toFixed(3)),
+    c.grey('ГБайт'),
+    c.cyan(mem),
+    c.grey('Байт'),
+    c.cyan(mem / 1024),
+    c.grey('кБайт'),
+    c.cyan((mem / (1024 * 1024)).toFixed(2)),
+    c.grey('МБайт'),
+  );
   log(
-    'Free:\t', free,
-    'Байт', free / 1024,
-    'кБайт', free / (1024 * 1024),
-    'МБайт\x1b[36m', (free / 2 ** 30).toFixed(2),
-    '\x1b[0mГБайт',
-  ); // mem
+    c.blue('Free:\t'),
+    c.cyan((free / 2 ** 30).toFixed(3)),
+    c.grey('ГБайт'),
+    c.cyan(mem),
+    c.grey('Байт'),
+    c.cyan(free / 1024),
+    c.grey('кБайт'),
+    c.cyan((free / (1024 * 1024)).toFixed(2)),
+    c.grey('МБайт'),
+  );
   log(
-    'Used:\t', used,
-    'Байт', used / 1024,
-    'кБайт', used / (1024 * 1024),
-    'МБайт\x1b[36m', (used / 2 ** 30).toFixed(2),
-    '\x1b[0mГБайт',
-  ); // mem
+    c.blue('Used:\t'),
+    c.cyan((used / 2 ** 30).toFixed(3)),
+    c.grey('ГБайт'),
+    c.cyan(mem),
+    c.grey('Байт'),
+    c.cyan(used / 1024),
+    c.grey('кБайт'),
+    c.cyan((used / (1024 * 1024)).toFixed(2)),
+    c.grey('МБайт'),
+  );
+
+  console.log(c.blue('memory Usage: '), c.cyan(memoryUsage), '%');
 }
 
 // * ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ
@@ -82,12 +122,13 @@ const infoUser = (arg) => {
 const infoNetwork = (arg) => {
   const nets = os.networkInterfaces();
   for (const adapter in nets) {
-    log('\nadapter:', adapter); //, nets[adapter]);
+    // log(adapter, nets[adapter]);
+    log(' ', c.blue('adapter:'), c.magenta(adapter));
     nets[adapter].forEach((item) => {
-      log(`IP ver: ${item.family}`)
-      log(`address: ${item.address}`)
-      log(`netmask: ${item.netmask}`)
-      log(`mac address: ${item.mac}`)
+      log(`${c.blue('IP ver:')} ${item.family}`)
+      log(`${c.blue('address:')} ${item.address}`)
+      log(`${c.blue('netmask:')} ${item.netmask}`)
+      log(`${c.blue('mac address:')} ${item.mac}`)
       log()
     });
   }
@@ -99,9 +140,8 @@ const infoSystem = (arg) => {
   const type = os.type();
   const release = os.release();
   const platform = os.platform();
-  const version = os.version()
+  const version = os.version();
 }
-
 
 
 const app = () => {
@@ -124,13 +164,14 @@ const app = () => {
   // log('Platform:', info.platform); // "win32"
   // log('Machine:', info.machine); // mach x86_64
 
-  log('\nMemory:');
+  log(c.green('\nMemory:'))
+  infoMemory();
 
-  log('\nNetworks:')
-  // log(info.nets)
+  log(c.green('\nNetworks:'))
   infoNetwork();
-
-  log('\nUsers:')
+  
+  log(c.green('Users:'))
+  infoUser();
 }
 
 
