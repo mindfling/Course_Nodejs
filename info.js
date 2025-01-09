@@ -52,14 +52,24 @@ const info = () => {
 // * ПРОЦЕССОР
 const infoCPU = (arg) => {
   const CPUS = os.cpus();
-  const CPUSone = info.CPUS[0];
-  const CPUnumber = info.CPUS.length; // 8
-  const parallelism = os.availableParallelism();
-  const CPUspeed = `~${info.CPUS[0].speed} МГц`; // 3392
+  const CPUFirst = CPUS[0]; //todo it is only FirstCPU
+
+
+  const CPUnumber = CPUS.length; // 8
+  const parallelism = os.availableParallelism(); // 8
+  const CPUspeed = `~${CPUS[0].speed} МГц`; // 3392
   const arch = os.arch();
   const machine = os.machine();
-  log(info.CPUSone, info.CPUspeed, 'x' + info.CPUnumber + ' шт'); // cpuz 'Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz'
-  log('Parallelism:', parallelism)
+  // log(CPUFirst, CPUspeed, 'x' + CPUnumber + ' шт'); // cpuz 'Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz'
+  
+  log(c.blue('Architecture:'), arch); // 
+  log(c.blue('Machine:'), machine); // mach x86_64
+  log(c.blue('OS Platform: '), os.platform());
+  log(c.blue('CPU Speed:'), CPUspeed);
+  log(c.blue('CPU logical:'), CPUFirst.model, CPUFirst.speed,);
+  log(c.blue('CPU numbers:'), CPUnumber);
+  log(c.blue('Parallelism:'), parallelism);
+  
 }
 
 // * ОПЕРАТИВНАЯ ПАМЯТЬ
@@ -108,14 +118,17 @@ const infoMemory = (arg) => {
 
 // * ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ
 const infoUser = (arg) => {
-  info.home = os.homedir();
-  info.temp = os.tmpdir();
-  info.users = os.userInfo();
-  // log({users: info.users})
-  log('User Name:', info.users.username)
-  log('User Home Dir:', info.users.homedir)
-  log('User Shell:', info.users.shell)
-  log('Home Folder: ', info.home);
+  const home = os.homedir();
+  const temp = os.tmpdir();
+  const users = os.userInfo();
+  const userName = users.username;
+  const userHomedir = users.homedir;
+
+  log(c.blue('Home Folder: '), home);
+  log(c.blue('Temp Folder: '), temp);
+  log(c.blue('User Name:'), userName);
+  log(c.blue('User Home Dir:'), userHomedir);
+  log(c.blue('User Shell:'), users.shell);
 }
 
 // * СЕТЕВЫЕ ПОДКЛЮЧЕНИЯ
@@ -141,6 +154,11 @@ const infoSystem = (arg) => {
   const release = os.release();
   const platform = os.platform();
   const version = os.version();
+  log(c.blue('OS Hostname:'), host); // ""
+  log(c.blue('OS Type:'), type); // "Windows_NT"
+  log(c.blue('Build Release:'), release); // "10.0.14393"
+  log(c.blue('Build version:'), version); // ""
+  log(c.blue('Platform:'), platform); // "win32"
 }
 
 
@@ -154,15 +172,8 @@ const app = () => {
   // log('Home Folder: ', info.home);
   // log('Temp Folder: ', info.temp);
 
-  console.log('\nCPUS');
-  // log();
-  // log('Architecture:', info.arch);
-  // log('platform: ', info.platform);
-
-  // log('OS Type:', info.type); // "Windows_NT"
-  // log('Build Release:', info.release); // "10.0.14393"
-  // log('Platform:', info.platform); // "win32"
-  // log('Machine:', info.machine); // mach x86_64
+  log(c.green('\nCPUS:'))
+  infoCPU();
 
   log(c.green('\nMemory:'))
   infoMemory();
@@ -172,6 +183,9 @@ const app = () => {
   
   log(c.green('Users:'))
   infoUser();
+  
+  log(c.green('Operation System:'))
+  infoSystem();
 }
 
 
