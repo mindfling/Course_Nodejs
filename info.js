@@ -37,6 +37,7 @@ const c = {
 // ОБЩАЯ ИНФОРМАЦИЯ
 const info = () => {
   console.log(`Host Name: ${os.hostname()}`);
+  // ? consider for end of line for current os
   const bufeol = Buffer.from(os.EOL);
   log(
     '\x1b[35mSystem End Of Line \x1b[32mos.EOL\x1b[0m',
@@ -66,7 +67,7 @@ const infoCPU = (arg) => {
   const arch = os.arch();
   const machine = os.machine();
   // log(CPUFirst, CPUspeed, 'x' + CPUnumber + ' шт'); // cpuz 'Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz'
-  log(c.blue('Architecture:'), arch); // 
+  log(c.blue('Architecture:'), arch); //
   log(c.blue('Machine:'), machine); // mach x86_64
   log(c.blue('CPU logical:'), c.green(CPUFirst.model), CPUFirst.speed,);
   log(c.blue('CPU Speed:'), CPUspeed);
@@ -81,7 +82,7 @@ const infoMemory = (arg) => {
   const free = os.freemem();
   const used = mem - free;
   const memoryUsage = ((used / mem) * 100).toFixed(2);
-  
+
   log(
     c.blue('Total:\t'),
     c.cyan((mem / 2 ** 30).toFixed(3)), c.grey('ГБайт'),
@@ -159,16 +160,16 @@ const infoSystem = (arg) => {
 
 const app = () => {
   const info = {}; // Our Info
-  
+
   log(c.green('\nCPUS:'))
   infoCPU();
 
   log(c.green('\nMemory:'))
   infoMemory();
-  
+
   log(c.green('\nOperation System:'))
   infoSystem();
-  
+
   log(c.green('\nUsers:'))
   infoUser();
 
