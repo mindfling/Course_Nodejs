@@ -2,19 +2,19 @@
 
 import chalk from 'chalk';
 import { argsParse } from './util/argsParse.js';
-import { log } from 'console';
+import { log } from 'node:console';
 import { generatePassword } from './service/generatePassword.service.js';
 import { getPasswordOptions } from './service/getPasswordOptions.service.js';
 
 
-const isCorrect = (l) => {
-  // return true если l не boolean и не NaN
-  return !isNaN(parseInt(l));
+const isCorrect = (arg) => {
+  // return true если arg не boolean и не NaN
+  return !isNaN(parseInt(arg));
 }
 
 const app = async () => {
   const args = argsParse(process.argv, ['ask']);
-  
+
   const options = {
     length: 8,
     uppercase: false,
@@ -64,7 +64,7 @@ Options:
     process.exit();
     return;
   }
-  
+
   if (
     !args.l && !args.length &&
     !args.u && !args.uppercase &&
@@ -82,19 +82,19 @@ Options:
 
 
   // * args to options
-  
+
   // todo l -> options.length
   if (isCorrect(args.l) || isCorrect(args.length)) {
     options.length = isCorrect(args.l) ? args.l
       : (isCorrect(args.length)
         ? args.length : options.length);
   }
-  
+
   // todo upper -> options.uppercase
   if (args.u || args.upper || args.uppercase) {
     options.uppercase = (args.u || args.upper || args.uppercase);
   }
-  
+
   // todo numb -> options.number
   if (args.n || args.numb || args.number || args.numbers) {
     options.number = args.n || args.numb || args.number || args.numbers;
@@ -103,11 +103,16 @@ Options:
   // todo spec -> options.special
   if (args.s || args.spec || args.special) {
     options.special = args.s || args.spec || args.special;
-  } 
+  }
+
+  // todo cyr -> options.cyrillic
+  if (args.c || args.cyr || args.cyrillic) {
+    options.cyrillic = (args.c || args.cyr || args.cyrillic);
+  }
 
 
   // * ВЫВОД НА ЭКРАН
-  
+
   // todo options.length
   if (options.length) {
     log('Количество символов =', +options.length)
