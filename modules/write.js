@@ -1,17 +1,14 @@
-import fs from 'node:fs/promises';
+import fs, { writeFile } from 'node:fs/promises';
 
 // Запись любых данных в файл на промисах
 export const write = async (path, data) => {
   try {
-    // console.log(`Данные: ${data}`);
-    await fs.writeFile(path, data);
-    // console.log(`записали в файл "${path}"`);
+    await writeFile(path, data);
     return true;
   } catch (err) {
     console.error(`Ошибка записи в файл "${path}" : ${err.message}`);
   }
 };
-
 
 // Кодирует и Записывает данные в файл на промисах
 export const writeJsonData = async (path, json) => {
@@ -22,7 +19,6 @@ export const writeJsonData = async (path, json) => {
     console.error(`При обработке json и записи возникла Ошибка : ${err.message}`);
   }
 };
-
 
 // тоже самое с writeFile
 // принимает объект, переводит в json, запис в файл как простой текст

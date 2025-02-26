@@ -2,8 +2,6 @@ import fs, { readFile } from 'node:fs/promises';
 
 // Чтение данных из файла
 // Возвращает сырой буффер данных
-// ? нужно ли проверять пути и аргументы методов
-// todo path check
 export const read = async path => {
   try {
     const data = await readFile(path);
@@ -11,9 +9,8 @@ export const read = async path => {
     return data;
   } catch (err) {
     console.error(`Ошибка чтения файла "${path}" : ${err.message}`);
-  } 
+  }
 };
-
 
 // Читает данные из json файла
 // декодирует парсит и возвращает готовый json объект
@@ -29,7 +26,6 @@ export const readJsonData = async (path) => {
       console.error(`При чтении и парсинге произошла Ошибка" : ${err.message}`);
     });
 };
-
 
 // тоже самое читаем данные из json файла и парсит данные в готовый объект возвращает данные
 export const readData = async (path) => {
