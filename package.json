@@ -1,7 +1,7 @@
 {
   "name": "todo-list-cli",
   "version": "1.0.0",
-  "description": "template node js project for learning CLI",
+  "description": "todo CLI приложение для консольного управления списком дел",
   "main": "index.js",
   "scripts": {
     "start": "node todo",
