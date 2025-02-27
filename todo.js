@@ -10,20 +10,19 @@ import chalk from 'chalk';
 
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 const homedir = os.homedir(); // создавать файл в папке пользователя
 const user = os.userInfo().username; // использовать имя пользователя
 const FILENAME = `${user}.todolist.json`;
 // путь к файлу БД
-// const todoPath = join(__dirname, FILENAME);
 const todoPath = join(homedir, FILENAME);
-// console.log('\ntodoPath: ', todoPath);
 
 
 const init = async () => {
-  // читаем файл список задач и проверяем его существование
+  // инициализируем файл списока задач и проверяем его существование
   const taskList = await readJsonData(todoPath);
   if (taskList) {
-    log(chalk.green(`Файл списка задач в текущем каталоге найден... Ok`));
+    // log(chalk.green(`Файл списка задач в текущем каталоге найден... Ok`));
     return taskList;
   } else {
     log(chalk.magenta('Не могу прочитать файл списка задач в текущем каталоге... Error'));
@@ -46,7 +45,7 @@ const app = async () => {
   const words = ['add', 'list', 'update', 'get', 'delete', 'status', 'help'];
 
   const commands = {};
-  const options = argsParse(args, words, commands); //?
+  const options = argsParse(args, words, commands);
 
   // выводит список задач
   const printTaskList = list => {
@@ -56,8 +55,7 @@ const app = async () => {
     });
   };
 
-  // todo HELP
-  // help вывести эту справку.
+  // todo help вывести эту справку.
   if (options.help) {
     log('\nhelp Список доступных команд:');
     log(chalk.green(words.join(', ')));
@@ -69,6 +67,8 @@ const app = async () => {
     log(`${chalk.green('delete <id:number>')}  - удалить задачу с указанным идентификатором.`);
     log(`${chalk.green('update <id:number> <"newTask">')}   - обновить задачу с указанным идентификатором.`);
     log(`${chalk.green('status <id:number> <"newStatus">')} - обновить статус задачи с указанным идентификатором.`);
+
+    process.exit();
   }
 
 
@@ -77,6 +77,8 @@ const app = async () => {
   if (options.list) {
     // const taskList = await readJsonData(todoPath);
     printTaskList(taskList);
+
+    process.exit();
   }
 
 
@@ -94,11 +96,13 @@ const app = async () => {
     } else {
       log(chalk.magenta('\nЗадача не может быть добавлена, нет описания задачи'));
     }
+
+    process.exit();
   }
+
 
   // todo update N title
   // update <id:number> <"newTask":string>: обновить задачу с указанным идентификатором.
-  // options.update = updatedTask
   // т.е. обновляем title задачи номер id
   if (options.update) {
     // todo validate id
@@ -111,6 +115,8 @@ const app = async () => {
     // todo use Object.assing(objold, objnew)
     log(`Задача с идентефикатором ${id} обновлена`);
     await writeJsonData(todoPath, taskList);
+
+    process.exit();
   }
 
 
@@ -118,7 +124,6 @@ const app = async () => {
   // status <id:number> <"newStatus":string>: обновить статус задачи с указанным идентификатором.
   if (options.status) {
     if (options.id) {
-      // const taskList = await readJsonData(todoPath);
       const id = options.id;
       const task = taskList[id-1];
       if(task) {
@@ -131,6 +136,8 @@ const app = async () => {
     } else {
       log(chalk.magenta('Задача не может быть получена, отсутствует id'));
     }
+
+    process.exit();
   }
 
 
@@ -138,7 +145,6 @@ const app = async () => {
   // get <id:number>: вывести информацию о задаче с указанным идентификатором.
   if (options.get) {
     if (options.id) {
-      // const taskList = await readJsonData(todoPath);
       const id = !isNaN(parseInt(options.id)) ? +options.id : 0;
       const task = taskList[id-1];
       if(task) {
@@ -153,6 +159,8 @@ const app = async () => {
     } else {
       log(chalk.magenta('Задача не может быть получена, отсутствует id'));
     }
+
+    process.exit();
   }
 
 
@@ -160,7 +168,6 @@ const app = async () => {
   // delete <id:number>: удалить задачу с указанным идентификатором.
   if (options.delete) {
     if (options.id) {
-      // const taskList = await readJsonData(todoPath);
       const id = options.id;
       if (taskList[id-1]) {
         taskList.splice(id-1, 1); // удаляем элемент массива
@@ -172,8 +179,21 @@ const app = async () => {
     } else {
       log(chalk.magentaBright('Задача НЕ может быть удалена, отсутствует id'));
     }
+
+    process.exit();
   }
 
-};
+
+  // если нет других опций
+  if (
+    !options.help || !options.list ||
+    !options.add || !options.update ||
+    !options.status || !options.get ||
+    !options.delete
+  ) {
+    log('\nИспользуйте help чтобы получить список доступных команд');
+    log(`${chalk.green('help')}  -  вывести эту справку.`);
+  }
+}
 
 app();

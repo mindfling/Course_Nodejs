@@ -5,7 +5,7 @@ import fs, { readFile } from 'node:fs/promises';
 export const read = async path => {
   try {
     const data = await readFile(path);
-    console.log(`Файл "${path}" успешно прочитан`);
+    // console.log(`Файл "${path}" успешно прочитан`);
     return data;
   } catch (err) {
     console.error(`Ошибка чтения файла "${path}" : ${err.message}`);
@@ -19,7 +19,7 @@ export const readJsonData = async (path) => {
     .then(buff => buff.toString('utf8')) // перекодируем буфер в строку
     .then(text => JSON.parse(text)) // парсим текстовую строку в json
     .then(json => {
-      console.log(`Файл "${path}" успешно прочитан и распарсин`);
+      // console.log(`Файл "${path}" успешно прочитан и распарсин`);
       return json; // возвращаем объект json
     })
     .catch(err => {
