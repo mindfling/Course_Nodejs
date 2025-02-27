@@ -1,23 +1,34 @@
-import { shuffle } from "../util/shuffle.util.js";
+import { shuffle } from "../util/shuffle.util.js"; // ?
 
-// ? не самый универсальный генератор
+export const getPasswordLength = (charset = ' ', length = 8) => {
+  // password from charset
+  let password = '';
+  // генерируем пароль точной длины
+  for (let i = 0; i < len; i++) {
+    const index = Math.floor(Math.random() * charset.length);
+    password += charset[index];
+  }
+  // возвращаем наш пароль
+  return password;
+}
+
 export const generatePassword = option => {
   // по умолчанию мал лат буквы
   let charset = 'abcdefghijklmnopqrstuvwxyz';
-  
+
   if (option.uppercase) {
     // добав Больш лат буквы
     charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   }
-  
+
   if (option.number) {
     // добав цифры
     charset += '0123456789';
   }
-  
+
   if (option.special) {
     // добав другие символы
-    // можно добавить еще //todo
+    // можно добавить еще ?
     charset += '!@#$%^&*()+=';
   }
 
@@ -26,14 +37,12 @@ export const generatePassword = option => {
     // добавить мал строчные буквы кириллицы
     charset += 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя';
   }
-  
+
   if (option.uppercyrus) {
     // добавить Большие ЗАГЛАВНЫЕ буквы кириллицы
     charset += 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
   }
-  
-  // const result = shuffle(charset.split(''));
-  // // ? Максим в уроке так обрезает лишние символы
-  // result.length = option.length;
-  return shuffle(charset.split('')).slice(0, option.length).join('');
+
+
+  return getPasswordLength(charset, option.length);
 };
