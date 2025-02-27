@@ -1,16 +1,5 @@
-import { shuffle } from "../util/shuffle.util.js"; // ?
-
-export const getPasswordLength = (charset = ' ', length = 8) => {
-  // password from charset
-  let password = '';
-  // генерируем пароль точной длины
-  for (let i = 0; i < len; i++) {
-    const index = Math.floor(Math.random() * charset.length);
-    password += charset[index];
-  }
-  // возвращаем наш пароль
-  return password;
-}
+import { shuffle } from "../util/shuffle.util.js";
+import { getPasswordCharsetLength } from "../util/generate.util.js";
 
 export const generatePassword = option => {
   // по умолчанию мал лат буквы
@@ -44,5 +33,5 @@ export const generatePassword = option => {
   }
 
 
-  return getPasswordLength(charset, option.length);
+  return getPasswordCharsetLength(charset, option.length);
 };

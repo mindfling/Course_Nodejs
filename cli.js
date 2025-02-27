@@ -13,7 +13,7 @@ const isCorrect = (arg) => {
 }
 
 const app = async () => {
-  const args = argsParse(process.argv, ['ask']);
+  const args = argsParse(process.argv, ['ask', 'help']);
 
   const options = {
     length: 8,
