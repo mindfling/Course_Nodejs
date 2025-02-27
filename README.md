@@ -1,10 +1,61 @@
-# node-template-project
-
-## Course_Nodejs
-
-## Стартовый шаблон node.js by Leskin Quper24
+# Course_Nodejs
 
 ## Lesson08 Lets make CLI node js Application
+
+## Homework lesson08
+
+Ans: <https://github.com/mindfling/Course_Nodejs/tree/lesson08>
+
+for **Workout 8**
+
+пишем CLI приложение генератор паролей практика [здесь](https://github.com/mindfling/Course_Nodejs/blob/lesson08/cli.js)
+
+Полезные ссылки:
+> [!TIP]
+>
+> - посмотреть в уроке 8
+
+### To-Do CLI
+
+> Домашнее Задание
+
+> [!NOTE]
+>
+> - Напишите CLI-приложение для управления задачами **To-Do List**
+> - Приложение должно позволять пользователю создавать, просматривать, обновлять  и удалять задачи.
+
+Требования:
+> [!IMPORTANT]
+>
+> Приложение должно быть запускаемым из командной строки и принимать команды от пользователя.
+
+Приложение должно поддерживать следующие команды:
+
+> [!IMPORTANT]
+>
+> - `add <task>`: добавить новую задачу
+> - `list`: вывести список всех задач
+> - `get <id>`: вывести информацию о задаче с указанным идентификаторо
+> - `update <id> <newTask>`: обновить задачу с указанным идентификатором
+> - `status <id> <newStatus>`: обновить статус задачи с указанным идентификатором
+> - `delete <id>`: удалить задачу с указанным идентификатором
+>
+>> Задачи должны сохраняться в файле (лучше `.json`), чтобы они могли быть доступными между разными запусками приложения.
+>
+>> Приложение должно использовать модульную структуру для разделения функциональности, например, модули для работы с задачами, обработки команд и взаимодействия с файловой системой
+>
+
+
+<!-- image -->
+![Tux, how to use To-Do CLI](https://github.com/mindfling/Course_Nodejs_Workout/blob/lesson_eight/img/taskscreen.jpg)
+
+Ans: <https://github.com/mindfling/Course_Nodejs/tree/lesson08>
+
+> [!TIP]
+>
+> How to us [MarkDown syntax](https://www.markdownguide.org/basic-syntax/)
+>
+> <https://www.markdownguide.org/basic-syntax/>
 
 ```bash
 #!/usr/bin/env node
