@@ -3,20 +3,25 @@ import { argsParse } from './util/argsParse.js';
 import { log, time } from 'node:console';
 import { readJsonData } from './modules/read.js';
 import { writeJsonData } from './modules/write.js';
-
+import os from 'node:os';
 import { dirname, join, basename, extname } from 'node:path';
 import URL from 'node:url';
 import chalk from 'chalk';
 
 const __filename = URL.fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const FILENAME = 'todolist.json';
-const todoPath = join(__dirname, FILENAME); // путь к файлу БД
+const homedir = os.homedir(); // создавать файл в папке пользователя
+const user = os.userInfo().username; // использовать имя пользователя
+const FILENAME = `${user}.todolist.json`;
+// путь к файлу БД
+// const todoPath = join(__dirname, FILENAME);
+const todoPath = join(homedir, FILENAME);
+// console.log('\ntodoPath: ', todoPath);
 
 
 const init = async () => {
   // читаем файл список задач и проверяем его существование
-  const taskList = await readJsonData(todoPath); // ? // todo
+  const taskList = await readJsonData(todoPath);
   if (taskList) {
     log(chalk.green(`Файл списка задач в текущем каталоге найден... Ok`));
     return taskList;

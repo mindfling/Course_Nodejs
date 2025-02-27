@@ -1,19 +1,23 @@
 {
-  "name": "template-project",
+  "name": "todo-list-cli",
   "version": "1.0.0",
   "description": "template node js project for learning CLI",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index",
+    "start": "node todo",
+    "todo": "node todo",
+    "generate": "node cli",
+    "dev": "nodemon todo",
     "lint": "eslint . --fix"
   },
   "type": "module",
   "keywords": [
     "node",
-    "app"
+    "app",
+    "todo",
+    "generate password"
   ],
-  "author": "Maksim Leskin <maksim.leskin@methed.ru>",
+  "author": "dim endroider",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^9.1.1",
