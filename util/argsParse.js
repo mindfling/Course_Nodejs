@@ -1,6 +1,6 @@
-const isText = (str) => isNaN(parseInt(str));
+export const isText = (str) => isNaN(parseInt(str));
 
-const isNumber = (str) => !isNaN(parseInt(str));
+export const isNumber = (str) => !isNaN(parseInt(str));
 
 export const argsParse = ([, , ...argv], words = [], commands = {}) => {
   const args = {};
@@ -18,21 +18,32 @@ export const argsParse = ([, , ...argv], words = [], commands = {}) => {
 
     if (argv[1]) {
       // если есть 1й параметр
+      // если ТЕКСТ
       if (isText(argv[1])) {
-        // если НЕчисло то это text: title или status
-        args['text'] = argv[1];
-        // console.log('1й параметр текст');
+        const textList = [];
+        // собираем все оставшиеся аргументы в текстовую строку
+        for (let i = 1; i < argv.length; i++) {
+          textList.push(argv[i])
+        }
+        // если НЕчисло то это слово или несколько слов text: title или status
+        args.text = textList.join(' ');
+
       } else {
         // если ЧИСЛО то это id
         // console.log('1й параметр число');
-        args['id'] = argv[1];
+        // args['id'] = argv[1];
+        args.id = parseInt(argv[1])
+        // если за id числом есть еще текст
+        if (argv[2] && isText(argv[2])) {
+          const textList = [];
+          // то собираем все оставшиеся аргументы в текстовую строку
+          for (let i = 2; i < argv.length; i++) {
+            textList.push(argv[i])
+          }
+          // если НЕчисло то это слово или несколько слов text: title или status
+          args.text = textList.join(' ');
+        }
       }
-    }
-
-    if (argv[2] && isText(argv[2])) {
-      // если есть 2й параметр
-      // если текст то это текстовое значение title OR status;
-      args['text'] = argv[2];
     }
   }
 

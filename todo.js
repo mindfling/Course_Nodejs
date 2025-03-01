@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { argsParse } from './util/argsParse.js';
+import { argsParse, isNumber } from './util/argsParse.js';
 import { log, time } from 'node:console';
 import { readJsonData } from './modules/read.js';
 import { writeJsonData } from './modules/write.js';
@@ -22,18 +22,44 @@ const init = async () => {
   // инициализируем файл списока задач и проверяем его существование
   const taskList = await readJsonData(todoPath);
   if (taskList) {
-    // log(chalk.green(`Файл списка задач в текущем каталоге найден... Ok`));
+    // log(chalk.green(`Файл списка задач в каталоге ${todoPath} найден...`),  chalk.blueBright(`Ok`));
     return taskList;
   } else {
-    log(chalk.magenta('Не могу прочитать файл списка задач в текущем каталоге... Error'));
-    const result = await writeJsonData(todoPath, []);
+    log(chalk.magenta('Не могу прочитать файл списка задач в текущем каталоге...'), chalk.red('Error'));
+    const result = await writeJsonData(todoPath, []); // создаем пустой файл todolist
     if (result) {
-      log(chalk.whiteBright('В текущем каталоге создан пустой файл списка задач...\nПерезапустите приложение'));
+      log(chalk.whiteBright('В текущем каталоге создан пустой файл списка задач...\n'), chalk.red('Перезапустите приложение'));
     }
     process.exit();
     return;
   }
 }
+
+
+const printHelpList = (words = []) => {
+  // вывести справку
+  log('Приложение для работой с todo листом');
+  log(chalk.yellow('node todo <commands> [options] <id> <title> <status>'))
+  log('\nhelp Список доступных команд:');
+  log(chalk.greenBright(words.join(', ')));
+  log();
+  log(`${chalk.green('help')} - вывести эту справку.`);
+  log(`${chalk.green('list')}  -  вывести список всех задач.`);
+  log(`${chalk.green('add <newTask: строка в кавычках>')} - добавить новую задачу.`);
+  log(`${chalk.green('get <id:number>')}   - вывести информацию о задаче с указанным идентификатором.`);
+  log(`${chalk.green('update <id:number> <newTask: строка>')}   - обновить задачу с указанным идентификатором.`);
+  log(`${chalk.green('delete <id:number>')}  - удалить задачу с указанным идентификатором.`);
+  log(`${chalk.green('status <id:number> <newStatus: строка>')} - обновить статус задачи с указанным идентификатором.`);
+}
+
+
+const printTodoList = list => {
+  // выводит список задач
+  log(chalk.green(`\nСписок задач:`));
+  list.forEach((task, index) => {
+    log(`${chalk.yellow(index + 1)}. [ ${task?.status} ] ${chalk.whiteBright(task.title)}`);
+  });
+};
 
 
 const app = async () => {
@@ -42,48 +68,39 @@ const app = async () => {
   const args = process.argv;
 
   // список доступных команд array
-  const words = ['add', 'list', 'update', 'get', 'delete', 'status', 'help'];
+  const words = [
+    'help',
+    'list',
+    'add',
+    'get',
+    'update',
+    'delete',
+    'status',
+  ];
 
   const commands = {};
   const options = argsParse(args, words, commands);
 
-  // выводит список задач
-  const printTaskList = list => {
-    log(chalk.green(`\nСписок задач:`));
-    list.forEach((task, index) => {
-      log(`${chalk.yellow(index + 1)}. [ ${task.status} ] ${chalk.whiteBright(task.title)}`);
-    });
-  };
 
-  // todo help вывести эту справку.
+  // * todo help вывести справку.
+  // help - вывести эту справку
   if (options.help) {
-    log('\nhelp Список доступных команд:');
-    log(chalk.green(words.join(', ')));
-    log();
-    log(`${chalk.green('help')}  -  вывести эту справку.`);
-    log(`${chalk.green('list')}  -  вывести список всех задач.`);
-    log(`${chalk.green('add <"newTask">')} - добавить новую задачу.`);
-    log(`${chalk.green('get <id:number>')}   - вывести информацию о задаче с указанным идентификатором.`);
-    log(`${chalk.green('delete <id:number>')}  - удалить задачу с указанным идентификатором.`);
-    log(`${chalk.green('update <id:number> <"newTask">')}   - обновить задачу с указанным идентификатором.`);
-    log(`${chalk.green('status <id:number> <"newStatus">')} - обновить статус задачи с указанным идентификатором.`);
-
+    printHelpList();
     process.exit();
   }
 
 
-  // todo list
-  // list: вывести список всех задач.
+  // * todo list
+  // list - вывести список всех задач.
   if (options.list) {
     // const taskList = await readJsonData(todoPath);
-    printTaskList(taskList);
-
+    printTodoList(taskList);
     process.exit();
   }
 
 
   // todo add
-  // add <"task":string>: добавить новую задачу.
+  // add <task:string>: добавить новую задачу.
   if (options.add) {
     if (options.text) {
       // const taskList = await readJsonData(todoPath);
@@ -95,8 +112,8 @@ const app = async () => {
       log(chalk.greenBright('\nЗадача добавлена с идентефикатором'), id);
     } else {
       log(chalk.magenta('\nЗадача не может быть добавлена, нет описания задачи'));
+      log(`use it: ${chalk.green('todo add <newTask>')} - добавить новую задачу.`);
     }
-
     process.exit();
   }
 
@@ -105,7 +122,6 @@ const app = async () => {
   // update <id:number> <"newTask":string>: обновить задачу с указанным идентификатором.
   // т.е. обновляем title задачи номер id
   if (options.update) {
-    // todo validate id
     // const taskList = await readJsonData(todoPath);
     const id = options.id;
     taskList[id-1] = {
@@ -115,6 +131,10 @@ const app = async () => {
     // todo use Object.assing(objold, objnew)
     log(`Задача с идентефикатором ${id} обновлена`);
     await writeJsonData(todoPath, taskList);
+
+    // else
+    // log('use it:')
+
 
     process.exit();
   }
@@ -127,16 +147,16 @@ const app = async () => {
       const id = options.id;
       const task = taskList[id-1];
       if(task) {
-        taskList[id-1].status = options?.text;
-        log(`Статус задачи с идентефикатором ${id} обновлен`);
+        taskList[id-1].status = options.text ? options.text : 'Undone';
         await writeJsonData(todoPath, taskList);
+        log(`Статус задачи с идентефикатором ${id} обновлен на ${chalk.greenBright(taskList[id-1].status)}`);
       } else {
-        log(chalk.redBright('Отсутствует задача с id'), +id);
+        log(chalk.magenta('\nСтатус задачи не может быть обновлен ') + chalk.redBright('Отсутствует задача с id'), +id);
       }
     } else {
-      log(chalk.magenta('Задача не может быть получена, отсутствует id'));
+      log(chalk.magenta('\nСтатус задачи не может быть обновлен, отсутствует id'));
+      log(`use it: ${chalk.green('status <id:number> <newStatus>')} - обновить статус задачи с указанным идентификатором.`);
     }
-
     process.exit();
   }
 
@@ -145,7 +165,8 @@ const app = async () => {
   // get <id:number>: вывести информацию о задаче с указанным идентификатором.
   if (options.get) {
     if (options.id) {
-      const id = !isNaN(parseInt(options.id)) ? +options.id : 0;
+      // const id = !isNaN(parseInt(options.id)) ? +options.id : 0;
+      const id = isNumber(options.id) ? +options.id : 0;
       const task = taskList[id-1];
       if(task) {
         log(
@@ -154,10 +175,12 @@ const app = async () => {
           `Статус:   ${chalk.whiteBright(task?.status)}\n`,
         );
       } else {
-        log(chalk.redBright('Такая задача отсутствует'));
+        // log(chalk.redBright('Такая задача отсутствует'));
+        log(`\n${chalk.green('Задача с идентефикатором')} ${chalk.yellowBright(id)}: ${chalk.redBright('Задача отсутствует')}`);
       }
     } else {
-      log(chalk.magenta('Задача не может быть получена, отсутствует id'));
+      log(chalk.magenta('\nЗадача не может быть получена, отсутствует id'));
+      log(`use it: ${chalk.green('get <id:number>')} - вывести информацию о задаче с указанным идентификатором.`);
     }
 
     process.exit();
@@ -175,24 +198,26 @@ const app = async () => {
         log(chalk.greenBright(`Удалена задача с идентефикатором`), +id);
       } else {
         log(chalk.redBright('Такая задача отсутствует'));
+        log(`use it: ${chalk.green('delete <id:number>')} - удалить задачу с указанным идентификатором.`);
       }
     } else {
       log(chalk.magentaBright('Задача НЕ может быть удалена, отсутствует id'));
+      log(`use it: ${chalk.green('delete <id:number>')} - удалить задачу с указанным идентификатором.`);
     }
-
     process.exit();
   }
 
 
-  // если нет других опций
+  // если ни одна из опций не сработала
   if (
     !options.help || !options.list ||
     !options.add || !options.update ||
     !options.status || !options.get ||
     !options.delete
   ) {
-    log('\nИспользуйте help чтобы получить список доступных команд');
-    log(`${chalk.green('help')}  -  вывести эту справку.`);
+    log('todo\nПриложение для работой с todo листом');
+    log('\nИспользуйте команду help чтобы получить список доступных команд');
+    log(`${chalk.green('todo help')} - вывести справку.`);
   }
 }
 
