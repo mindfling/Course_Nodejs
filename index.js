@@ -1,24 +1,25 @@
 #!/usr/bin/env node
 
-import readline, { createInterface } from 'node:readline/promises';
-import { copyFile, readFile, writeFile } from 'node:fs/promises';
-import fs, { createReadStream, createWriteStream } from 'node:fs';
+import fs from 'node:fs';
 import { log, error } from 'node:console';
 import path, { dirname, join } from 'node:path';
 import URL from 'node:url';
+import readline, { createInterface } from 'node:readline/promises';
+import process, { stdin as input, stdout as output } from 'node:process';
 import { read } from './modules/read.js';
 import { write } from './modules/write.js';
-import process, { stdin as input, stdout as output } from 'node:process';
 
 const __filename = URL.fileURLToPath(import.meta.url);
+console.log('__filename: ', __filename);
 const __dirname = dirname(__filename);
-
+console.log('__dirname: ', __dirname);
 
 const promptUserOptions = async option => {
   // спрашиваем пользователя о параметрах замены
   const rl = createInterface({ input, output });
-  option.name =
-    (await rl.question('Введите имя папки или файла для замены : ')) || 'test.txt';
+  option.dirname =
+    (await rl.question('Введите имя папки или файла для замены : ')) ||
+    'test.txt';
   option.find = (await rl.question('Введите Текст для поиска : ')) || ' ';
   if (option.find) {
     // собираем регулярное выражение через Строку поиска
@@ -31,11 +32,12 @@ const promptUserOptions = async option => {
 
 const checkOptions = options => {
   // проверяем полученные настройки
-  log('\nname: "\x1b[32m', options.name, '\x1b[0m"');
+  log('\nname: "\x1b[32m', options.dirname, '\x1b[0m"');
   log('find: "\x1b[32m' + options.find + '\x1b[0m"');
   log('replace: "\x1b[32m' + options.replace + '\x1b[0m"\n');
 };
 
+/*
 const findReplaceInFile = async (target = 'test.txt', find, replace) => {
   // todo читаем файл test.txt
   const text = (await readFile(target)).toString('utf8');
@@ -44,7 +46,7 @@ const findReplaceInFile = async (target = 'test.txt', find, replace) => {
   await writeFile(target, result);
   return;
 };
-
+ */
 
 const app = async () => {
   console.log('Hello text replace\n');
@@ -72,32 +74,23 @@ const app = async () => {
   await promptUserOptions(options);
 
   checkOptions(options);
+  console.log('options: ', options);
 
-  const filename = options.name;
-  console.log('filename: "', filename, '"');
-
-
-  const files = fs.readdirSync('./files');
+  const folder = path.join(__dirname, options.dirname);
+  console.log('folder: ', folder);
+  const files = fs.readdirSync(options.dirname);
   console.log('files: ', files);
-  log()
 
-  for (let i = 0; i < files.length; i++) {
-    log(i, files[i])
-    fs.renameSync('./files/'+files[i], './files/'+'testta0'+i+'.txt');
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const oldName = path.join(folder, files[i])
+      const newName = path.join(folder, `${(Math.random()*1000).toFixed(2)}_${files[i]}`)
+      log('oldName: ', oldName, 'to', 'newName: ', newName);
+      fs.renameSync(oldName, newName);
+    }
+  } catch (e) {
+    console.error('ОШИБКА ', e.message)
   }
-
-  // fs.rename('./files/'+files[1], './files/testtast.txt', (e) => {
-  //   log(' переименован ')
-  // })
-
-  // files.forEach((file, index) => {
-  //   log('file', file);
-  //   fs.rename('files\\'+file, 'files\\'+'tst'+index+'.txt', (e) => {
-  //     log(e.message, 'rename')
-  //   })
-  // })
-
-  // await findReplaceInFile(filename, options.find, options.replace);
 };
 
 app();
