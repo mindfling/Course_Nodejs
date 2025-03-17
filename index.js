@@ -5,7 +5,7 @@ import { log, error } from 'node:console';
 import path, { dirname, join } from 'node:path';
 import URL from 'node:url';
 import readline, { createInterface } from 'node:readline/promises';
-import process, { stdin as input, stdout as output } from 'node:process';
+import process, { stdin as input, stdout as output, stdout } from 'node:process';
 import { read } from './modules/read.js';
 import { write } from './modules/write.js';
 
@@ -70,6 +70,10 @@ const app = async () => {
   });
   */
 
+
+
+
+/*
   const options = {}; // обкт с настройками
   await promptUserOptions(options);
 
@@ -81,6 +85,7 @@ const app = async () => {
   const files = fs.readdirSync(options.dirname);
   console.log('files: ', files);
 
+  // try to rename files in folder
   try {
     for (let i = 0; i < files.length; i++) {
       const oldName = path.join(folder, files[i])
@@ -91,6 +96,28 @@ const app = async () => {
   } catch (e) {
     console.error('ОШИБКА ', e.message)
   }
+*/
+
+
+
+
+
+
+  const textRL = readline.createInterface({
+    input: fs.createReadStream('./files/test.txt'),
+    output: fs.createWriteStream('files/textresult.txt'),
+  });
+
+  let i = 0;
+  for await (const line of textRL) {
+    console.log(++i);
+    textRL.output.write(line);
+    textRL.output.write('next line -->')
+  }
+
+  console.log('THE END');
+  textRL.close();
 };
 
 app();
+
